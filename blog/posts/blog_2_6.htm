@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset=utf-8>
+  <meta name="author" content="Andrew Sernyak">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blog, Pt. 7 — 3⃣ Deploying :: ndrw ze destruktor</title>
+  <link rel='stylesheet' href='../style.css' />
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="../atom.xml" />
+  <link rel="image_src" href="../../logo.png" />
+  <!-- GOOGL ANAL --> 
+  <script>
+     var _gaq = [['_setAccount', 'UA-18813210-3'], ['_trackPageview']];
+     (function(d, t) {
+      var g = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      g.async = true;
+      g.src = '//www.google-analytics.com/ga.js';
+      s.parentNode.insertBefore(g, s);
+     })(document, 'script');
+  </script>
+</head>
+
+<body>
+<nav>
+  <section>
+    <ul>
+      <li style="float: left;"><a href="../index.htm">Back</a>
+      <li><a href="../atom.xml">RSS</a></li>
+    </ul>
+  </section>
+</nav>
+<header><pre>
+                   /\\\                                          
+                   \/\\\                                         
+                    \/\\\                                        
+ /\\/\\\\\\          \/\\\   /\\/\\\\\\\   /\\    /\\   /\\      
+ \/\\\////\\\    /\\\\\\\\\  \/\\\/////\\\ \/\\\  /\\\\ /\\\     
+  \/\\\  \//\\\  /\\\////\\\  \/\\\   \///  \//\\\/\\\\\/\\\     
+   \/\\\   \/\\\ \/\\\  \/\\\  \/\\\          \//\\\\\/\\\\\     
+    \/\\\   \/\\\ \//\\\\\\\/\\ \/\\\           \//\\\\//\\\     
+     \///    \///   \///////\//  \///             \///  \///     
+
+</pre>
+</header>
+<ul>
+   
+    </li><article>
+  
+<h2>3⃣ Deploying</h2>
+
+<p>The only interface that will be introduced in this is post is <strong>Deployer</strong>.</p>
+
+<pre><code>type Deployer interface {
+    Deploy([]Post) ([]Post, error)
+}
+</code></pre>
+
+<p>Deployer&rsquo;s duty is to convert posts to a html files ready to be deployed to the web.
+Usually deployment would be the last stage, but it still returns transformed posts, which may be helpful for debugging for example.</p>
+
+<p>So why need one more stage of posts transformation? As was mentioned earlier, Deployer knows everything about your hosting process: how files should be organized, urls convention, sitemap, etc; so we don&rsquo;t have to care about them on rendering step, and can concentrate on how your posts should look like.</p>
+
+<p>Usually Deployer will store things locally, but it use some shell scripts to deploy stuff to hosting, not only posts, but also images and other assets.</p>
+
+<p>Another thing worth mentioning that Deployer could convert your posts not only to html, but also to pdf and other formats — depends on how far your imagination can go :)</p>
+
+<h2>Summing up</h2>
+
+<p>The structure for describing site generation workflow is ready, and before starting real example I&rsquo;ve given some thought about how to simplify things a bit.</p>
+
+<h4>Config</h4>
+
+<p>Config should be an interface and config should be searchable.</p>
+
+<pre><code>type Config interface {
+    Get(key ...interface{}) interface{}
+    Set(key interface{}, value interface{}) interface{}
+    Find(predicate func(interface{}, interface{}) bool) map[interface{}]interface{}
+}
+</code></pre>
+
+<h4>Storage</h4>
+
+<p>Storage is basically a Config of assets, so we don&rsquo;t need a separate interface for that.</p>
+
+<h4>Validation</h4>
+
+<p>The validation of Config should be separated to separate generic interface, so not only configs could be validated — but also posts/assets.</p>
+
+<pre><code>type Validator interface {
+    Validate(params ...interface{}) (bool, error)
+}
+</code></pre>
+
+<p>Validator returns error, but as error is an interface type you can always extend it in order to have custom error handling.</p>
+
+<h4>Post</h4>
+
+<p>Post&rsquo;s GetMeta() would be renamed to a GetConfig(), so Post would automatically implement PostsSource interface.</p>
+
+<h3>Workflow changes</h3>
+
+<p>Here is how workflow looks for our example.</p>
+
+<pre><code>// create a generator
+blog, err := New()
+if err != nil {
+    println(&quot;Can't instantiate a blog: &quot; + err.Error())
+    return
+}
+
+// retrieve posts
+posts, err := blog.GetPosts()
+if err != nil {
+    println(&quot;Error while retrieving posts: &quot; + err.Error())
+    return
+}
+// render them
+
+renderedPosts, err := blog.Render(posts)
+if err != nil {
+    println(&quot;Error while rendering: &quot; + err.Error())
+    return
+}
+
+_, err = blog.Deploy(renderedPosts)
+if err != nil {
+    println(&quot;Error while deployment: &quot; + err.Error())
+    return
+}
+</code></pre>
+
+<p>Here we have Blog struct implementing all main entities. It could also be three separate entities: Posts, Renderer, Deployer. These are created from one shared main Config and after creation these are not configurable. This means recreating objects every time even when slightly different change in behavior is required.
+Single-session console blog generator can live with it (as for modifying behavior restart of the app is needed), but more complex examples like ui — definitely couldn&rsquo;t.</p>
+
+<p>So I&rsquo;ve added a config parameter to methods of PostsSource, Renderer and Deployer.</p>
+
+<p>The next thing that matters me is the repeating pattern of usage in the example, so it is tempting to separate these into some kind of &lsquo;Workflow&rsquo;, but I am not sure about the benefits it would give. Still this is a higher level abstraction, so I will think more about it later.</p>
+
+<h3>Future work</h3>
+
+<p>The example already implements something similar to Deployer interface so there will be no new code today, but in the next post things will be starting to get real. Stay tuned.</p>
+
+
+    </article></li>
+</ul>  
+
+<div id="mc-container"></div>
+<script type="text/javascript">
+var mcSite = '11384';
+(function() {
+    var mc = document.createElement('script');
+    mc.type = 'text/javascript';
+    mc.async = true;
+    mc.src = 'http://cackle.me/mc.widget-min.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(mc);
+})();
+</script>
+<a href="http://cackle.me" id="mc-link"><b style="color:#4FA3DA">CACKL</b><b style="color:#F65077">E</b> comment system</a>
+
+<footer>
+  <section>&copy; <b>A. Sernyak</b> — all rights reserved. 2012-2013</section>
+  <section></section>
+</footer>
+
+</body>
+</html>

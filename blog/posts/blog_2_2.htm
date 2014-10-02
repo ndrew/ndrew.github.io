@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset=utf-8>
+  <meta name="author" content="Andrew Sernyak">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blog, Pt. 3 — Stagosaurus :: ndrw ze destruktor</title>
+  <link rel='stylesheet' href='../style.css' />
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="../atom.xml" />
+  <link rel="image_src" href="../../logo.png" />
+  <!-- GOOGL ANAL --> 
+  <script>
+     var _gaq = [['_setAccount', 'UA-18813210-3'], ['_trackPageview']];
+     (function(d, t) {
+      var g = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      g.async = true;
+      g.src = '//www.google-analytics.com/ga.js';
+      s.parentNode.insertBefore(g, s);
+     })(document, 'script');
+  </script>
+</head>
+
+<body>
+<nav>
+  <section>
+    <ul>
+      <li style="float: left;"><a href="../index.htm">Back</a>
+      <li><a href="../atom.xml">RSS</a></li>
+    </ul>
+  </section>
+</nav>
+<header><pre>
+                   /\\\                                          
+                   \/\\\                                         
+                    \/\\\                                        
+ /\\/\\\\\\          \/\\\   /\\/\\\\\\\   /\\    /\\   /\\      
+ \/\\\////\\\    /\\\\\\\\\  \/\\\/////\\\ \/\\\  /\\\\ /\\\     
+  \/\\\  \//\\\  /\\\////\\\  \/\\\   \///  \//\\\/\\\\\/\\\     
+   \/\\\   \/\\\ \/\\\  \/\\\  \/\\\          \//\\\\\/\\\\\     
+    \/\\\   \/\\\ \//\\\\\\\/\\ \/\\\           \//\\\\//\\\     
+     \///    \///   \///////\//  \///             \///  \///     
+
+</pre>
+</header>
+<ul>
+   
+    </li><article>
+  
+<h2>Say &ldquo;Hello&rdquo; to Stagosaurus</h2>
+
+<!-- image wrapper -->
+
+<div style="max-width:90%; height:auto; position: relative; margin:0 auto;">
+    <img 
+    style="max-width:100% !important; height:auto; display: block;"
+    src="https://raw.github.com/ndrew/stagosaurus/master/stagosaurus.png" />
+</div>
+
+<p>The &ldquo;Stagosaurus&rdquo; stands for &ldquo;<u>Sta</u>tic Site Generator in <u>Go</u>&rdquo;. &lsquo;Stago&rsquo; sounds like a nazi library so I&rsquo;ve added &lsquo;saurus&rsquo;, because dinosaurs are awesome!
+<small style="font-size: 50%;">Maybe one day I&rsquo;ll stick to this naming for all my libs — beware of Montesaurus</small></p>
+
+<p>But before diving into coding I have to come with the requirements. Therefore some domain analysis of existing blogging solutions should be done.
+Most aspects of blogging have been already solved by someone and are pretty straight-forward to implement — as blogging is not that hard (technically) — but integrating them into one cohesive solution is tricky.</p>
+
+<p>First I want to check whether existing solutions (blogging services &amp; Social Networks, blog engines and static site generators) fit nicely into <code>0⃣ Setup  1⃣ Write  2⃣ Render  3⃣ Deploy  4⃣ Promote</code> scheme (described in <a href="http://sernyak.com/blog/posts/blog_2_1.htm">previous post</a>).</p>
+
+<p>Secondly, as it is stated in the name, I&rsquo;ll focus mostly on static site generators, as they are <em>simple</em> in technical sense. And simplicity is a nice property of the software to have, so I want Stagosaurus to be <em>simple</em> too — no rocket science here. Of course, for users it is easier to use social network/blogging platforms, but developing them — definitely <em>harder</em>.</p>
+
+<p>So lets concentrate on making <em>working</em> and <em>elegant</em> <small>(at least for me)</small> <strong>product</strong>. To keep the long story short, I&rsquo;ve come with a list of existing features (sort of) and categorized them into 5 categories of our scheme — as I felt right for me:</p>
+
+<h4>0⃣ Setup</h4>
+
+<ul>
+<li>Assets Management (for posts)</li>
+<li>Configuration</li>
+<li>Extensibility — external repos, etc.</li>
+<li>Starter kits
+
+<ul>
+<li>Blog: Importing from other blogs (WP, Blogger, RSS Feed), etc.</li>
+<li>Company Site / Personal Site / Software project / etc.</li>
+</ul></li>
+</ul>
+
+<h4>1⃣ Create/Configure posts</h4>
+
+<ul>
+<li>Different Markup Formats — reStructuredText, Markdown, textile, WikiCreole, html</li>
+<li>Internationalization support</li>
+<li>Post management
+
+<ul>
+<li>Drafts / posts in progress</li>
+<li>Retired posts</li>
+<li>Scheduling posts</li>
+</ul></li>
+<li>Preview (own web-server)
+
+<ul>
+<li>Live Updates (monitoring file-system)</li>
+</ul></li>
+<li>Static pages</li>
+<li>Tag support</li>
+<li>Visual editor</li>
+<li>Web page meta-data</li>
+</ul>
+
+<h4>2⃣ Render</h4>
+
+<ul>
+<li>Analytics</li>
+<li>Archives
+
+<ul>
+<li>yearly archives</li>
+<li>calendar</li>
+</ul></li>
+<li>Custom Search
+
+<ul>
+<li>render page with keywords</li>
+</ul></li>
+<li>Formatting
+
+<ul>
+<li>Footnotes</li>
+</ul></li>
+<li>Front Page
+
+<ul>
+<li>Index page (possibly with pagination)</li>
+<li>Teasers</li>
+</ul></li>
+<li>Image galleries</li>
+<li>Slideshows</li>
+<li>Source code displaying — Gists, Pygments, etc</li>
+<li>Themes/Templates
+
+<ul>
+<li>Embedding Css, template editing, Footers/Headers/Sidebars/Navigation<br /></li>
+<li>Online repository of downloadable themes</li>
+</ul></li>
+<li>Social crap</li>
+</ul>
+
+<h4>3⃣ Deploy</h4>
+
+<ul>
+<li>Assets Management (for rendered posts)</li>
+<li>Dropbox</li>
+<li>Executing external commands on build</li>
+<li>Google sitemap generation</li>
+<li>Incremental generation</li>
+<li>Posts&rsquo; post-processing
+
+<ul>
+<li>compression
+
+<ul>
+<li>CSS/JS - YUI compressor</li>
+<li>Images - optipng / jpegoptim</li>
+<li>Html - tidy</li>
+<li>Typography
+
+<ul>
+<li>typogrify (ampersands, caps, quotes, <a href="http://en.wikipedia.org/wiki/Widows_and_orphans">widows and orphans</a>)</li>
+<li>smartypants (punctuation)</li>
+<li>Other improvements (like Js loading)</li>
+</ul></li>
+</ul></li>
+</ul></li>
+<li>Pretty page names for URLs</li>
+<li>RSS Feeds (Atom, RSS)</li>
+<li>Redirections</li>
+<li>Tag support – Pages and feeds for each tag you used</li>
+<li>Social crap</li>
+<li>Version control</li>
+</ul>
+
+<h4>4⃣ Promote</h4>
+
+<ul>
+<li>Analytics</li>
+<li>Comments
+
+<ul>
+<li>Discuss, IntenseDebate, LiveFyre, Moot, Google+, Facebook, VK, Cackle.ru</li>
+</ul></li>
+<li>Pingbacks</li>
+</ul>
+
+<p>Having this list of requirements doesn&rsquo;t mean that I should implement all of them, but it should be possible to tweak Stagosaurus to fulfill these requirements.</p>
+
+<p>Also we can see a common pattern here: blogs are not monolithic nowadays, it is common to rely on some external services to do their part of the job: markdown for writing, dropbox for hosting, discuss for comments, etc. — so support for variety of choices is a crucial requirement.</p>
+
+<p>Enough for further thinking. The next post will be about the initial step — <strong>0⃣ Setup</strong>. Stay tuned.</p>
+
+<p>PS. If you know any feature that is not in the list — notify me about it.</p>
+
+
+    </article></li>
+</ul>  
+
+<div id="mc-container"></div>
+<script type="text/javascript">
+var mcSite = '11384';
+(function() {
+    var mc = document.createElement('script');
+    mc.type = 'text/javascript';
+    mc.async = true;
+    mc.src = 'http://cackle.me/mc.widget-min.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(mc);
+})();
+</script>
+<a href="http://cackle.me" id="mc-link"><b style="color:#4FA3DA">CACKL</b><b style="color:#F65077">E</b> comment system</a>
+
+<footer>
+  <section>&copy; <b>A. Sernyak</b> — all rights reserved. 2012-2013</section>
+  <section></section>
+</footer>
+
+</body>
+</html>

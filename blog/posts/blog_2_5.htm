@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset=utf-8>
+  <meta name="author" content="Andrew Sernyak">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blog, Pt. 6 — 2⃣ Rendering content :: ndrw ze destruktor</title>
+  <link rel='stylesheet' href='../style.css' />
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="../atom.xml" />
+  <link rel="image_src" href="../../logo.png" />
+  <!-- GOOGL ANAL --> 
+  <script>
+     var _gaq = [['_setAccount', 'UA-18813210-3'], ['_trackPageview']];
+     (function(d, t) {
+      var g = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      g.async = true;
+      g.src = '//www.google-analytics.com/ga.js';
+      s.parentNode.insertBefore(g, s);
+     })(document, 'script');
+  </script>
+</head>
+
+<body>
+<nav>
+  <section>
+    <ul>
+      <li style="float: left;"><a href="../index.htm">Back</a>
+      <li><a href="../atom.xml">RSS</a></li>
+    </ul>
+  </section>
+</nav>
+<header><pre>
+                   /\\\                                          
+                   \/\\\                                         
+                    \/\\\                                        
+ /\\/\\\\\\          \/\\\   /\\/\\\\\\\   /\\    /\\   /\\      
+ \/\\\////\\\    /\\\\\\\\\  \/\\\/////\\\ \/\\\  /\\\\ /\\\     
+  \/\\\  \//\\\  /\\\////\\\  \/\\\   \///  \//\\\/\\\\\/\\\     
+   \/\\\   \/\\\ \/\\\  \/\\\  \/\\\          \//\\\\\/\\\\\     
+    \/\\\   \/\\\ \//\\\\\\\/\\ \/\\\           \//\\\\//\\\     
+     \///    \///   \///////\//  \///             \///  \///     
+
+</pre>
+</header>
+<ul>
+   
+    </li><article>
+  
+<h2>2⃣ Rendering content</h2>
+
+<p>Now there are abstractions for posts representation and the next thing to be done is to convert created content to a format that can be represented over web — html documents. Here I&rsquo;ll focus on rendering html markup, but the ideas would stay the same for other formats, too.</p>
+
+<h3>HTML</h3>
+
+<p>HTML is a markup language for documents that allows to</p>
+
+<ul>
+<li>represent information visually by building visual hierarchy from tags according to  rules of tags representation — css</li>
+<li>connect documents with external content (assets), like other pages, images, videos, etc.<br /></li>
+</ul>
+
+<p>So it would be wise to separate these two steps in Stagosaurus.</p>
+
+<p>First step I would be calling <strong>rendering</strong>. At this step html markup for representing visual hierarchy will be generated.</p>
+
+<p>The second step is <em>deployment</em>. Deployment is responsible for connection generated html documents to other assets and, maybe, delivering generated web-page to hosting.</p>
+
+<p>Other generators instead of separating these two steps and making them transparent for user, stick to some hardcoded conventions on how html files have to be organized at hosting during rendering. This leads to some problems, but lets now focus on rendering.</p>
+
+<h3>Rendering</h3>
+
+<p>Rendering is process of encoding information from one form to another. This process is like amplifying signal in order to make it distinguishable from noise and web is the medium through which your &lsquo;signal&rsquo; will be delivered to your readers.</p>
+
+<p>As humans express themselves very badly in html, it is reasonable to encode information from brain first to text which later will be rendered to html by computer.</p>
+
+<p>In blogging, the information &lsquo;rendered&rsquo; to posts (text) first and later is converted to html markup, usually by using templates — description of visual hierarchy in html.</p>
+
+<p>Most blog generators use some kind of lightweight semantic markup that allows without much visual clutter structure text into semantic elements, like headers, lists, tables, etc. These later will be represented by html tags. The problem with mapping semantic elements to html is that this conversion is ambiguous. Structural elements can be rendered to html markup in multiple ways, during most of which semantic sense would be lost. Still, humans could retrieve information structure visually, but for computer semantics will be lost.</p>
+
+<p>But let&rsquo;s return to Stagosaurus. Rendering is represented by the <strong>Renderer</strong> abstraction:</p>
+
+<pre><code>type Renderer interface {
+    Render([]Post) ([]Post, error)
+}
+</code></pre>
+
+<p>Renderer converts set of posts in one format (markdown) to a set of posts in other format (html).</p>
+
+<p>Note that renderer is an interface around function so renderers could be composed easily.</p>
+
+<p>In order to illustrate way renderer should work consider the following example.</p>
+
+<p>We have posts <code>[post-1, … , post-n]</code>pass them to renderer and new set of posts <code>[index.htm (table of contents), feed.xml (rss/atom feed), post-1.htm, post-2.htm, … , post-n.htm ]</code></p>
+
+<p>The tricky part here is matching post to a specific renderer. Most site generators force users to specify the template in each post&rsquo;s metadata, which is not the best approach. Arguably better approach to have a rules for assigning posts to templates as done in gostatic.</p>
+
+<p>Let&rsquo;s check the rendering of different things in more detail.</p>
+
+<h4>Rendering individual posts</h4>
+
+<p>The most common approach is that post&rsquo;s content would be converted to a text in html markup that would be inserted at some placeholder in html template. Also there could be placeholders for some properties of post&rsquo;s metadata (like date, tags) and, maybe, some facilities for formatting data in these placeholders.</p>
+
+<p>There are two problems in creating html template for posts.</p>
+
+<ol>
+<li>the structure and formats of post&rsquo;s metadata should be always known</li>
+<li>there will be almost no control about embedded data which is already formatted (like markdown-generated html) without practicing regex or other magic.<br /></li>
+</ol>
+
+<p>First issue can be solved by specifying a convention about necessary post configuration, maybe with some ui to ease things a little.</p>
+
+<p>Second — by having machine friendly representation of post&rsquo;s content, like the one in awesome clojure <a href="https://github.com/weavejester/hiccup">hiccup</a> library. This would allow render to do modifications to structural elements of the post&rsquo;s content. These modifications could be specified via selector rules or something similar.</p>
+
+<p>Let&rsquo;s take as an example responsible images. In order to have an auto-resizable image in the post, image tag should be wrapped in other tag to make resizing possible, but the markdown doesn&rsquo;t generate such markup automatically. The same problem is with footnotes/teasers/etc — there is no general conventions how to map these to html markup.</p>
+
+<h4>Rendering table of contents</h4>
+
+<p>The approach is same as for rendering posts, but there is a tricky part in listing posts, as the templating engine should be able to do iteration instead of just simple substitution. Usually templating engines provide such feature, but then the structure of iterated data should be known.</p>
+
+<h3>General problems while rendering</h3>
+
+<p>Rendering is the hardest and one the most important part of the process. One possible way to improve the situation is keep templating simple and limited to some subset of operations, like substitution and iterating only, and do all the formatting before rendering. Another way of handling this is the opposite — give the templating engine more power to work with data structures and do formatting. Still, with my approach you choose the way that works for you.</p>
+
+<h3>Conclusion</h3>
+
+<p>Rendering is not limited only to generating html pages: one day you could render your blog to a book and deploy it to pdf. But in order to make it happen, data conversion should be split into two steps: rendering and deployment. On rendering step information should be represented in both user-friendly (in terms of visual hierarchy) and machine-friendly way (for Stagosaurus), and on deployment step data should be converted to a browser-friendly information.</p>
+
+<h3>Example</h3>
+
+<p>I&rsquo;ve updated the example so Blog will implement Renderer interface and do simple template substitution. Check the code code on <a href="https://github.com/ndrew/stagosaurus">github</a> via tag <a href="https://github.com/ndrew/stagosaurus/releases/tag/iteration_3"><code>iteration_3</code></a>.</p>
+
+<p>The result of <code>go run example/example.go</code> should look like this</p>
+
+<pre><code>  Stoned_Post.htm
+  Autogenerated post, bro!
+  ================================================================================
+  Awesome_Post.htm
+  Stoned post, bro!
+  ================================================================================
+  Nice_Post.htm
+  Autogenerated post, bro!
+  ================================================================================
+  index.html
+
+                                      `..-------..`    
+                                     ./``       ```\`  
+                                    +``           ``\  
+                                    +` RHOAARRRR!!!  |` 
+                                     +.            ./` 
+                     `               `--``      `..:`  
+               -```.: `...`            .-::.---..``    
+              `-..``-.``/ `-``         -:``            
+            `-``:`       `.```         ``              
+             .-:`          --         
+            ``--`          `/.   ``*. 
+              `:.    `.      ..  ./   
+      `.   `/ `-``.   `.       `.`    
+    `-+/----.--..-// ::--`/:...``     
+            ``           `            
+
+  Rhoaarrrr Stagosaurus!
+  Here are my posts: 
+     - Stoned Post
+     - Awesome Post
+     - Nice Post
+
+  ================================================================================
+</code></pre>
+
+<p>The next post will be on deployment after which I will start implemented fully featured site generator with Stagosaurus.</p>
+
+<p>Stay tuned.</p>
+
+
+    </article></li>
+</ul>  
+
+<div id="mc-container"></div>
+<script type="text/javascript">
+var mcSite = '11384';
+(function() {
+    var mc = document.createElement('script');
+    mc.type = 'text/javascript';
+    mc.async = true;
+    mc.src = 'http://cackle.me/mc.widget-min.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(mc);
+})();
+</script>
+<a href="http://cackle.me" id="mc-link"><b style="color:#4FA3DA">CACKL</b><b style="color:#F65077">E</b> comment system</a>
+
+<footer>
+  <section>&copy; <b>A. Sernyak</b> — all rights reserved. 2012-2013</section>
+  <section></section>
+</footer>
+
+</body>
+</html>

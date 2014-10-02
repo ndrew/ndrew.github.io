@@ -1,0 +1,238 @@
+@font-face { font-family: Arsenal; src: url('../fonts/arsenal_font/Arsenal-Regular.otf'); }
+@font-face { font-family: Arsenal; font-weight: bold; src: url('../fonts/arsenal_font/Arsenal-Bold.otf'); }
+@font-face { font-family: Free-Mono; font-weight: bold; src: url('../fonts/freefont-20120503/FreeMono.otf'); }
+
+
+* { border: 0; margin: 0; padding: 0; }
+
+/* responsive crap */
+
+
+html {
+ 	font-size: 100%;
+	overflow-y: scroll; }
+
+body { 
+	/*background: url('grid.png');*/
+	border-top: lightgray 0.25rem solid;
+    padding: 0.5rem 5%;
+    font-family: Arsenal; font-size: 1.500rem; 
+	line-height: 3.00rem; }
+
+h1 { 
+	font-size: 9.3750rem; 
+	line-height: 10.0000rem;
+	margin-top: 3.5rem; margin-bottom: 3.5rem; 
+	text-align: right;
+} 
+
+h2 { 
+	font-size: 4.5625rem; 
+	line-height: 7.0000rem; 
+	margin-top: 3.5rem; margin-bottom: 3.5rem; } 
+
+h3 { 
+	font-size: 2.8125rem; 
+	line-height: 3.000rem; 
+	margin-top: 3.5rem; margin-bottom: 3.5rem; } 
+
+
+@media only screen and (min-width: 320px) {
+	body { 
+		/*background-color: red;*/
+		padding: 0;
+	}
+
+	html { font-size: 65%; }
+}
+
+@media only screen and (min-width: 480px) {
+	/*body { background-color: blue;}*/
+	html { font-size: 70%; }
+}
+
+
+@media only screen and (min-width: 768px) {
+	/*body { background-color: yellow;}*/
+	html { font-size: 80%; }
+}
+
+@media only screen and (min-width: 1000px) {
+	/*body { background-color: aqua;}*/
+	html { font-size: 100%; }
+}
+
+
+p {
+	text-align: justify;
+	-webkit-hyphens: auto;
+	-moz-hyphens: auto;
+	hyphens: auto;
+}
+
+p, ul { 
+	margin-top: 0rem; margin-bottom: 3rem; } 
+
+ul {
+    margin-left: 1.5rem;
+}
+
+small, aside { 
+	font-size: 1.0625rem; }
+
+/* content */
+
+body > header {
+	margin-top: 3rem;
+	margin-bottom: 7.5rem;
+}
+
+
+body > header > pre {
+	font-family: Free-Mono, Courier New, monospace;
+	line-height: 1.75rem;
+	font-size: 1.500rem;
+    text-align: center; }
+
+@media only screen and (min-width: 320px) {
+	body > header > pre {
+		font-size: 0.7rem;
+		line-height: 0.9rem;
+	}
+
+	body > header {
+		margin-top: 1rem;
+		margin-bottom: 1.5rem;
+	}
+
+}
+
+@media only screen and (min-width: 480px) {
+	body > header > pre {
+		font-size: 1.2rem;
+		line-height: 1.5rem;
+	}
+
+	body > header {
+		margin-top: 2rem;
+		margin-bottom: 3rem;
+	}
+
+}
+
+@media only screen and (min-width: 1000px) {
+	body > header > pre {
+		font-size: 1.5rem;
+		line-height: 1.75rem;
+	}
+
+	body > header {
+		margin-top: 3rem;
+		margin-bottom: 5.5rem;
+	}
+
+}
+
+
+body > nav {
+	font-size: 1.0625rem;
+	line-height: 1.9rem;
+	text-align: right;
+	padding-left: 0.5rem;
+	padding-right: 0.5rem; }
+
+a {
+	background-color: #fcfcfc; }
+
+body > ul {}
+
+nav > section > ul {
+	border-bottom: 0.1rem solid #cacaca; 
+	margin-bottom: 0; }
+
+nav > section > ul > li {
+    list-style-type: none;
+    display:inline-block; }
+
+body > ul {
+	width: 77%;
+	margin-left: auto; 
+	margin-right: auto;
+}
+
+ul > li > ul  {
+    padding-left: 1rem;
+    margin-bottom: 0;
+}
+
+
+body > ul > li {
+    list-style-type: none;
+    /*border-top:0.30rem solid black;
+    margin-top: -0.30rem;*/ }
+
+body > ul > li > article {
+    color: black; }
+
+body > ul > li > article > .summary {   
+    /*border-bottom: 0.08rem dotted gray;*/
+    color: #3a4a3a; 
+    text-indent: 3rem;
+}
+
+body > ul > li:last-child > article .summary {
+	border: none;
+}
+
+article > header {
+    text-indent : 0.33rem;
+    font-weight: bold;
+    font-family: Arsenal;
+    color: #000; 
+}
+
+body > footer {
+	font-size: 1.0625rem;
+	text-align: right;
+    border-top: 0.1rem solid #ccc;
+	padding-left: 0.5rem;
+	padding-right: 0.5rem; }
+
+#mc-container {
+	width: 77%;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#mc-content h3 {
+	font-family: Arsenal; }
+
+pre {
+    line-height: 150%;
+}
+
+table, pre {
+    margin-bottom: 3rem; 
+}
+
+table, th, td {
+    border: 0.1rem solid #ccc;
+}
+
+td {
+    padding: 1.065rem;
+    vertical-align: top;
+}
+
+h4 + ul {
+    margin-left: 3rem;
+    font-size: 75%;
+    line-height: 175%;
+    margin-bottom: 0.1rem;
+    padding-top: 0.5rem;
+    border-top:0.1rem solid #ccc;
+}
+
+h4 + ul + p {
+    margin-top: 3rem;
+}

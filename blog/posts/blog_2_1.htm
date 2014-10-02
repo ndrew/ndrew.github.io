@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset=utf-8>
+  <meta name="author" content="Andrew Sernyak">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blog, Pt. 2 — Domain analysis :: ndrw ze destruktor</title>
+  <link rel='stylesheet' href='../style.css' />
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="../atom.xml" />
+  <link rel="image_src" href="../../logo.png" />
+  <!-- GOOGL ANAL --> 
+  <script>
+     var _gaq = [['_setAccount', 'UA-18813210-3'], ['_trackPageview']];
+     (function(d, t) {
+      var g = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      g.async = true;
+      g.src = '//www.google-analytics.com/ga.js';
+      s.parentNode.insertBefore(g, s);
+     })(document, 'script');
+  </script>
+</head>
+
+<body>
+<nav>
+  <section>
+    <ul>
+      <li style="float: left;"><a href="../index.htm">Back</a>
+      <li><a href="../atom.xml">RSS</a></li>
+    </ul>
+  </section>
+</nav>
+<header><pre>
+                   /\\\                                          
+                   \/\\\                                         
+                    \/\\\                                        
+ /\\/\\\\\\          \/\\\   /\\/\\\\\\\   /\\    /\\   /\\      
+ \/\\\////\\\    /\\\\\\\\\  \/\\\/////\\\ \/\\\  /\\\\ /\\\     
+  \/\\\  \//\\\  /\\\////\\\  \/\\\   \///  \//\\\/\\\\\/\\\     
+   \/\\\   \/\\\ \/\\\  \/\\\  \/\\\          \//\\\\\/\\\\\     
+    \/\\\   \/\\\ \//\\\\\\\/\\ \/\\\           \//\\\\//\\\     
+     \///    \///   \///////\//  \///             \///  \///     
+
+</pre>
+</header>
+<ul>
+   
+    </li><article>
+  
+<h2>On blogging</h2>
+
+<p>Nowadays you can&rsquo;t impress anyone with a blog. But let&rsquo;s think for a bit about a concept of blogging and abstractions involved.</p>
+
+<p>I think of blogging as <strong>publishing content on the web, delivering it to other people and waiting for their feedback</strong>.</p>
+
+<p>That is what internet is about: consuming someone&rsquo;s content and <em>[maybe]</em> producing your own. Blogging just means doing it in <strong>a specific way</strong>: somebody creates content as <em>posts</em> which will show up in the feed of other blog users which can share(repost) and comment your posts.</p>
+
+<p>Some use blogging platforms/social networks/etc to publish and promote their content, others choose to have standalone/selfhosted blog, just because they want <em>to have control</em> (sorry Thom). Hosting your blog provides: a domain, own hosting for your assets(images/videos/etc), posibility to run your code(like enhanced analytics), and much more.</p>
+
+<h3>Idea</h3>
+
+<p>After doing some heavy thinking on the topic I&rsquo;ve found out that blogging is just a pipelined process with 5 simple steps:</p>
+
+<pre><code> 0⃣ Preparation (setup)
+ 1⃣ Content creation (content strategy) 
+ 2⃣ Preparing content for publishing (rendering)
+ 3⃣ Publishing (deployment)
+ 4⃣ Feedback and promotion.
+</code></pre>
+
+<p>Let&rsquo;s check whether things fit nicely our schema</p>
+
+<table style="font-size: 75%; line-height: 100%;">
+<tr>
+    <th>Platform</th>
+    <th>Process</th>
+</tr>
+<tr>
+<td>Blogging platform (blogger, livejournal)</td>
+<td>
+0⃣ Get an account, register a blog <br/>
+1⃣ Prepare posts <br/>
+2⃣ Format posts prior posting<br/>
+3⃣ Publish posts to blog subscribers / friend feed <br/>
+4⃣ Share posts in social media / other promotion 
+</td>
+</tr>
+
+<tr>
+<td>Static blog generator</td>
+<td>
+0⃣ Install generator locally or on server and get hosting <br/>
+1⃣ Prepare posts <br/>
+2⃣ Convert posts to html<br/>
+3⃣ Deploy ready posts to web and updated rss feed<br/>
+4⃣ Share posts in social media / other promotion 
+</td>
+</tr>
+
+<tr>
+<td>Dynamic web site</td>
+<td>
+0⃣ Get hosting, setup cms<br/> 
+1⃣ Create content<br/>
+2⃣-3⃣ Preview content before publishing and publish it<br/>
+4⃣ Promote your content 
+</td>
+</tr>
+
+<tr>
+    <th colspan="2">More examples</th>
+</tr>
+
+<tr>
+<td>Book publishing</td>
+<td>
+0⃣ Decide to write a book / find author<br/> 
+1⃣ Get book's manuscript/draft<br/>
+2⃣ Give it to typography<br/>
+3⃣ Get the book printed<br/>
+4⃣ Try selling it and republish if the book is successful
+</td>
+</tr>
+
+<tr>
+<td>Newspapers</td>
+<td>
+0⃣ Get reporters, editor and other things needed<br/> 
+1⃣ Get them to write news<br/>
+2⃣ Decide what will go to the next issue and send it to typography<br/>
+3⃣ Print the newspaper<br/>
+4⃣ Promote/sell it
+</td>
+</tr>
+
+<tr>
+<td>TV</td>
+<td>
+0⃣ Get the crew and equipment<br/> 
+1⃣ Write scenario<br/>
+2⃣ Shoot the video and send it to post-production<br/>
+3⃣ Primetime!<br/>
+4⃣ Advertisements and other promotions
+</td>
+</tr>
+
+</table>
+
+<p>So we are seeing the common pattern here. Note that each is step is usually more complex then I&rsquo;ve described. For example, creating content includes having some kind of editorial policy and having an editor; rendering content may also include other people like designers; deploying content to web/other medium can also be a challenging task; promoting is also a huge topic.</p>
+
+<hr style="margin-left: auto; margin-right: auto; margin-bottom: 1.5rem; height: 0.15rem; width: 75%; border: 0.1rem solid #ccc; display: block;"/>
+
+<p>Okay, I&rsquo;ve stated what everybody already knew, but lets now take a look on this from technical perspective:
+we&rsquo;ve separated abstractions, so we can deal with them independently on each level.</p>
+
+<h3>0⃣ Setup</h3>
+
+<p>At this point some initial decisions are to be made. Note that decisions here will affect all next decisions, so it is better to plan things well here. Move through all aspects and take all pros and cons.</p>
+
+<h3>1⃣ Content</h3>
+
+<p>Content is a king, so carefully decide what to write about. Know your audience, if you are doing a technical blog do not post cat videos (unless it&rsquo;s octocats). Consider in which language you&rsquo;ll be posting, get an editor or at least somebody to proofread your posts (spell checker doesn&rsquo;t count), especially if you are not a native speaker.
+The next thing to consider is frequency of posting, so plan things beforehand, because nobody wants big gaps between posts – it&rsquo;s one of the biggest mistakes people do.</p>
+
+<h3>2⃣ Rendering</h3>
+
+<p>Rendering will depend on your choice of blogging platform. In most cases blogging platform will allow you to do customisations depending on your design and technical skills. Design can be very important, especially if you are doing art/desing blog, but remember that the most focus should be on content.</p>
+
+<h3>3⃣ Deployment</h3>
+
+<p>Most blogging platforms will handle it for you, but there are some things to be considered, like hosting assets (i.e. images) and refering to other your previous posts.
+Also this part is responsible for publishing your posts at certain time and making updates to existing posts.</p>
+
+<h3>4⃣ Feedback and promotion</h3>
+
+<p>Some time ago blogs used to be a discussion platform, but now we have social networks serve a unified communication channel for content delivery. Still you can use your blog as main channel for feedback, but the discussion will inevitably go to social medias and other blogs.
+Usually blogs allow people to subscribe to updates via rss or some other technology, but it is always a good idea to use twitter/facebook/g+/other link aggregators (hacker news,reddit) to notify about your posts.
+At some point social media doubles blogging (as you can post your content there), but with self-hosted blogs you have more control about your content and its representation which can be a big win for further promotion — as you can present your content in unique way or, maybe, even provide unique user experience while reading your blog.</p>
+
+<p>Stay tuned.</p>
+
+
+    </article></li>
+</ul>  
+
+<div id="mc-container"></div>
+<script type="text/javascript">
+var mcSite = '11384';
+(function() {
+    var mc = document.createElement('script');
+    mc.type = 'text/javascript';
+    mc.async = true;
+    mc.src = 'http://cackle.me/mc.widget-min.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(mc);
+})();
+</script>
+<a href="http://cackle.me" id="mc-link"><b style="color:#4FA3DA">CACKL</b><b style="color:#F65077">E</b> comment system</a>
+
+<footer>
+  <section>&copy; <b>A. Sernyak</b> — all rights reserved. 2012-2013</section>
+  <section></section>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset=utf-8>
+  <meta name="author" content="Andrew Sernyak">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blog, Pt. 5 —  1⃣ Posts :: ndrw ze destruktor</title>
+  <link rel='stylesheet' href='../style.css' />
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="../atom.xml" />
+  <link rel="image_src" href="../../logo.png" />
+  <!-- GOOGL ANAL --> 
+  <script>
+     var _gaq = [['_setAccount', 'UA-18813210-3'], ['_trackPageview']];
+     (function(d, t) {
+      var g = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      g.async = true;
+      g.src = '//www.google-analytics.com/ga.js';
+      s.parentNode.insertBefore(g, s);
+     })(document, 'script');
+  </script>
+</head>
+
+<body>
+<nav>
+  <section>
+    <ul>
+      <li style="float: left;"><a href="../index.htm">Back</a>
+      <li><a href="../atom.xml">RSS</a></li>
+    </ul>
+  </section>
+</nav>
+<header><pre>
+                   /\\\                                          
+                   \/\\\                                         
+                    \/\\\                                        
+ /\\/\\\\\\          \/\\\   /\\/\\\\\\\   /\\    /\\   /\\      
+ \/\\\////\\\    /\\\\\\\\\  \/\\\/////\\\ \/\\\  /\\\\ /\\\     
+  \/\\\  \//\\\  /\\\////\\\  \/\\\   \///  \//\\\/\\\\\/\\\     
+   \/\\\   \/\\\ \/\\\  \/\\\  \/\\\          \//\\\\\/\\\\\     
+    \/\\\   \/\\\ \//\\\\\\\/\\ \/\\\           \//\\\\//\\\     
+     \///    \///   \///////\//  \///             \///  \///     
+
+</pre>
+</header>
+<ul>
+   
+    </li><article>
+  
+<h2>1⃣ Posts</h2>
+
+<p>So after I&rsquo;ve come with initial design of <a href="https://github.com/ndrew/stagosaurus">Stagosaurus</a> I am ready to proceed on posts.</p>
+
+<p>First thing to clarify is content strategy and editorial policy: it is a matter of taste and a way of doing publishing: for different people it will be different.</p>
+
+<p>In order not to end up with yet another blog/site nobody needs, you have to create a workflow which will work for you. This includes revision of your posts, like proofreading or getting feedback before actual publication.</p>
+
+<p>In this post I&rsquo;ll focus more on abstractions for content representation and storage. I&rsquo;ll write more on workflow in a post about rendering, because content is being created for some medium which shapes the process of content creation.</p>
+
+<h3>Abstractions</h3>
+
+<p>The first abstraction is <strong>Asset</strong>.</p>
+
+<pre><code>type Asset interface {
+    GetName() string
+    GetContents() (*[]byte, error)
+}
+</code></pre>
+
+<p>Asset is the smallest piece of content: posts, images, stylesheets, external javascript code — are all assets. Each Asset has name (id) and, of course, its content. We can&rsquo;t know the purpose and format of asset&rsquo;s content, so I&rsquo;ll be using the most generic type for that — array/slice of bytes.</p>
+
+<p>The next abstraction is <strong>Post</strong>.</p>
+
+<pre><code>type Post interface {
+    GetMeta() *Config
+    GetAssets() []Asset
+    // Asset interface
+    GetName() string
+    GetContents() (*[]byte, error)
+}
+</code></pre>
+
+<p>Post serves as a container of Assets. Also post has its own configuration — metadata. The post itself is an asset — it has name and content.</p>
+
+<p>Third abstraction I&rsquo;ll be using is <strong>Storage</strong>.</p>
+
+<pre><code>type Storage interface {
+    GetAsset(string) (Asset, error)
+    StoreAsset(Asset) error
+}
+</code></pre>
+
+<p>Think of Storage as of simple key-value store for assets where name of the asset is a key and asset is a value. Storage implementations also can do retrieving and storing of a configuration, for this purpose I&rsquo;ll provide a <strong>ConfigSource</strong> interface.</p>
+
+<pre><code>type ConfigSource interface {
+    GetConfig() (*Config, error)
+}
+</code></pre>
+
+<p>It is tempting to make Post inherit ConfigSource, but Posts should always return a valid config, otherwise error handling will get too complicated.</p>
+
+<p>The last abstraction is <strong>PostsSource</strong>.</p>
+
+<pre><code>type PostSource interface {
+    GetPosts() ([]Post, error)
+}
+</code></pre>
+
+<p>PostsSource is encapsulating a strategy/algorithm for retrieving Posts. Think of PostsSource as of iterator over Storage that returns posts for rendering and further processing.</p>
+
+<p>Note that PostsStorage is flexible, because it can return both hierarchical posts  with all posts embedded in it (like index page), or just return list of posts. You&rsquo;ll see why this approach is flexible in the post about rendering.</p>
+
+<h3>Implementation</h3>
+
+<p>To keep things simple I&rsquo;ll extend my dummy blog to provide only implementations of PostSource and ConfigSource interface. There will be no implementation for storage yet, thus it should be pretty straight-forward to implement that by yourself.</p>
+
+<p>Source code for this iteration is available on <a href="https://github.com/ndrew/stagosaurus">github</a> via tag <a href="https://github.com/ndrew/stagosaurus/releases/tag/iteration_2"><code>iteration_2</code></a>.</p>
+
+<p>The result of running example would be something like:</p>
+
+<pre><code>[ `go run example.go` | done: 243.855154ms ]
+╔========================╗
+╟ Rhoaarrrr Stagosaurus! ╢
+╚========================╝
+
+ Here are my posts:
+     - Nice Post
+        Super post, bro!
+     - Awesome Post
+       Nice post, bro!
+    - Super Post
+       Nice post, bro!
+</code></pre>
+
+<p>Stay tuned.</p>
+
+
+    </article></li>
+</ul>  
+
+<div id="mc-container"></div>
+<script type="text/javascript">
+var mcSite = '11384';
+(function() {
+    var mc = document.createElement('script');
+    mc.type = 'text/javascript';
+    mc.async = true;
+    mc.src = 'http://cackle.me/mc.widget-min.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(mc);
+})();
+</script>
+<a href="http://cackle.me" id="mc-link"><b style="color:#4FA3DA">CACKL</b><b style="color:#F65077">E</b> comment system</a>
+
+<footer>
+  <section>&copy; <b>A. Sernyak</b> — all rights reserved. 2012-2013</section>
+  <section></section>
+</footer>
+
+</body>
+</html>

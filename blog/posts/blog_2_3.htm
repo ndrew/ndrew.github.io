@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset=utf-8>
+  <meta name="author" content="Andrew Sernyak">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blog, Pt. 4 —  0⃣ Setup and configuration :: ndrw ze destruktor</title>
+  <link rel='stylesheet' href='../style.css' />
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="../atom.xml" />
+  <link rel="image_src" href="../../logo.png" />
+  <!-- GOOGL ANAL --> 
+  <script>
+     var _gaq = [['_setAccount', 'UA-18813210-3'], ['_trackPageview']];
+     (function(d, t) {
+      var g = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      g.async = true;
+      g.src = '//www.google-analytics.com/ga.js';
+      s.parentNode.insertBefore(g, s);
+     })(document, 'script');
+  </script>
+</head>
+
+<body>
+<nav>
+  <section>
+    <ul>
+      <li style="float: left;"><a href="../index.htm">Back</a>
+      <li><a href="../atom.xml">RSS</a></li>
+    </ul>
+  </section>
+</nav>
+<header><pre>
+                   /\\\                                          
+                   \/\\\                                         
+                    \/\\\                                        
+ /\\/\\\\\\          \/\\\   /\\/\\\\\\\   /\\    /\\   /\\      
+ \/\\\////\\\    /\\\\\\\\\  \/\\\/////\\\ \/\\\  /\\\\ /\\\     
+  \/\\\  \//\\\  /\\\////\\\  \/\\\   \///  \//\\\/\\\\\/\\\     
+   \/\\\   \/\\\ \/\\\  \/\\\  \/\\\          \//\\\\\/\\\\\     
+    \/\\\   \/\\\ \//\\\\\\\/\\ \/\\\           \//\\\\//\\\     
+     \///    \///   \///////\//  \///             \///  \///     
+
+</pre>
+</header>
+<ul>
+   
+    </li><article>
+  
+<h2>0⃣ Setup</h2>
+
+<p>During the setup phase I have to make decisions about my blogging process: I have to come up with blogging workflow on the user level, choose core features I want and then decide which technology to use.</p>
+
+<h3>General requirements</h3>
+
+<ul>
+<li><p><u><em>Static site generator</em></u>: I&rsquo;ll stick to this format as it is convenient for me. Taking into account that there are lots similar projects on github — this approach had been proven to work for other people well.</p></li>
+
+<li><p>Main interface as <u><em>CLI application</em></u>: console apps have universal interface (i.e. POSIX), are portable and can be integrated into other applications. This means that Stagosaurus should be <strong>machine-friendly</strong>.</p></li>
+
+<li><p><u><em>Graphic user interface</em></u> atop CLI application: I am a human being so I need <strong>user-friendly</strong> interface. But there is a problem here: different people have different opinions on what is user friendly, so my requirement should be stated as: to have <u><em>web-interface from the box</em></u>. If it doesn&rsquo;t work for you — adapt machine-friendly solution for your needs. Also I won&rsquo;t be stating the obvious why user interface for me should be web. <small>answer is simple here: I am Frontend Web Developer</small></p></li>
+
+<li><p><u><em>Extensibility</em></u>: I need steps <code>0⃣ Setup  1⃣ Write  2⃣ Render  3⃣ Deploy  4⃣ Promote</code> to be customizable (to some reasonable extent, of course). Most of existing solution <u>rely on conventions</u> made by their respectable authors and I want to have them <u>stated explicitly</u>.</p></li>
+
+<li><p><u><em>Library</em></u>: Stagosaurus would be shipped as a library, but there will be some ready &lsquo;starter kits&rsquo; for easy start, so anyone could build up his/her own generator with conventions he/she likes. Maybe some of these will be pre-build, so these apps will be usable out of the box.</p></li>
+</ul>
+
+<h3>Technical requirements</h3>
+
+<p>As it was stated before — I&rsquo;ll be using Go programming language. It is fast, it is cross-platform and it is a good fit for building cli applications and doing system programming. Many of parts needed are already implemented: markdown to html parser,  even several site/blog generators exist (<a href="https://github.com/piranha/gostatic">gostatic</a>, <a href="http://demin.ws/blog/english/2012/04/23/static-blog-engine-goblog/">Goblog</a>, <a href="http://github.com/PuerkitoBio/trofaf">trofaf</a> and other), including my current generator.</p>
+
+<p>However, there is one big limitation – go is a compiled language, so it would be impossible to have dynamic plug-in system, like the one in Sublime Text (which has one of the best extension systems I&rsquo;ve ever seen). Still, go has built-in support for using github/bitbucket go libraries, so we can have extensibility, the only thing that you would have to recompile your generator. On the other hand, this will allow to have custom builds of site generators suited for some specific needs: blog, documentation site, etc.</p>
+
+<h3>Global configuration</h3>
+
+<p>The main thing that happens at the setup stage is <em>configuration</em>. Global configuration should be accessible to all stages of site generation and you can&rsquo;t predict what params should be specified. This leads to conclusion that configuration should be <em>generic</em>.</p>
+
+<p>I&rsquo;ve did some analysis of the config implementation in various existing blog engines:</p>
+
+<ul>
+<li>almost all have configuration as static/global class (kirby, anchorcms, picocms), but some pass it via constructor (gostatic)<br /></li>
+<li>some use hardcoded consts for configuration (begoon), some have hardcoded fields in config class (picocms, gostatic)</li>
+<li>many implement config as dictionary/associative array (anchorcms, nikola), which later could be meged with pre-configured defaults. Some allow only keys of value-type (strings mostly)</li>
+<li>some mix i/o with configuration, so it config should always be provided via some file, also gostatic has nice format for posts&rsquo; processing configuration</li>
+</ul>
+
+<h3>Stagosaurus Configuration</h3>
+
+<p>The solution for configuration I&rsquo;ll be using is a dictionary (I prefer no to use word &lsquo;map&rsquo; due to connotations it has in functional programming). Speaking strictly, dictionary is a set of triples: [key, value, default-value].</p>
+
+<p>Currently it is implemented in struct <code>Config</code> and has an optional <code>*Config</code> with defaults.</p>
+
+<p>There is no limitation of types of keys, most of the type value-types as keys will work great, but site generator can store runtime data in config too.</p>
+
+<p>Dictionary values can be anything, but in practice it&rsquo;s inconvenient to guess type by yourself (it&rsquo;s in the example below), so for a some limited set of basic types (like strings, numbers, dates, etc.) I&rsquo;ve added convenience functions similar to the type casting functions in go&rsquo;s <a href="http://golang.org/pkg/reflect/#Value">reflect</a> package.</p>
+
+<p>Also there is configuration validation: depending on workflow, different keys will be needed — so there should be a way of checking whether configuration has all needed data, both in user-friendly and machine-friendly way.</p>
+
+<p>Another broad topic is serializing/deserializing. <em>generic</em> abstractions doesn&rsquo;t play well with <em>concrete</em> tasks: serializing any object is a tricky (if not impossible task) in general sense, but if there is a way of <em>specializing</em> abstraction to a <em>concrete</em> type/interface — the problem will be gone. More on that will be in next posts.</p>
+
+<p>But here is a quick example: there is in-memory dictionary that is needed to be serialized/deserialized. There are many ways of doing it: serializing to xml/json/edn/yaml/etc. The process will look like the following</p>
+
+<p><code style="margin-left: auto; margin-right: auto;">in-mem cfg ⇆ config.xml</code></p>
+
+<p>Note, that some part of data will be inevitably lost in these conversion. We could add step in the middle, like</p>
+
+<p><code style="margin-left: auto; margin-right: auto;">in-mem-cfg ⇆ serializable-cfg ⇔ config.xml</code></p>
+
+<p>This means, if we want to serialize config to JSON, for example, we just need to convert config to some smaller subset of types, which will be serializable.
+This also has other benefits, consider this example from the future: I want to render content (html for example) with some meta-data (like title/author and so on) to a web-page using some fancy templating engine — guess what, templating engine would be designed to work only with some limited subset of types/ways of representing data, this is where specialization will be handy.</p>
+
+<p>Another point of view on the problem is that there always will be in-memory config, and only sometimes config in file, so in-memory config is more general than stored config.</p>
+
+<p>And if we decide to store configuration, not all of it should be stored, some part of configuration would have semantic sense only for the current session, like passed command-line flags, environmental vars, etc. So the this topic is still open, more serialization/deserialization will be covered when I get to posts&rsquo; processing.</p>
+
+<p>The code for this iteration is provided in <a href="https://gist.github.com/ndrew/6658542">gist</a> or you can grab everything as <a href="https://github.com/ndrew/stagosaurus/releases/tag/iteration_1">an archive</a> or just checkout the repo and switch to the <code>iteration_1</code> tag</p>
+
+<pre><code>git clone https://github.com/ndrew/stagosaurus.git
+cd stagosaurus
+git checkout iteration_1
+go test # i assume you have go installed
+go run example/example.go
+</code></pre>
+
+<p>If you run the code the results should be like</p>
+
+<pre><code>-&gt;: Desktop ndrw$ git clone https://github.com/ndrew/stagosaurus.git
+Cloning into 'stagosaurus'... bla-bla-bla, done.
+-&gt;: Desktop ndrw$ cd stagosaurus
+-&gt;: stagosaurus ndrw$ git checkout iteration_1
+  ... bla-bla-bla ...
+HEAD is now at b9521f5... added configuration and first example
+-&gt;: stagosaurus ndrw$ go test
+PASS
+ok      _/Users/ndrw/Desktop/stagosaurus    0.022s
+-&gt;: stagosaurus ndrw$ 
+-&gt;: stagosaurus ndrw$ go run example/example.go
+╔========================╗
+╟ Rhoaarrrr Stagosaurus! ╢
+╚========================╝
+
+Congratulation, you did it!
+</code></pre>
+
+<p>Of course, configuration is not final at this point: it should be refined during further stages of development.</p>
+
+<p>The next post will be on posts and there will be coding in it. Stay tuned.</p>
+
+
+    </article></li>
+</ul>  
+
+<div id="mc-container"></div>
+<script type="text/javascript">
+var mcSite = '11384';
+(function() {
+    var mc = document.createElement('script');
+    mc.type = 'text/javascript';
+    mc.async = true;
+    mc.src = 'http://cackle.me/mc.widget-min.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(mc);
+})();
+</script>
+<a href="http://cackle.me" id="mc-link"><b style="color:#4FA3DA">CACKL</b><b style="color:#F65077">E</b> comment system</a>
+
+<footer>
+  <section>&copy; <b>A. Sernyak</b> — all rights reserved. 2012-2013</section>
+  <section></section>
+</footer>
+
+</body>
+</html>

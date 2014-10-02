@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset=utf-8>
+  <meta name="author" content="Andrew Sernyak">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>regex й parsing expression grammars :: ndrw ze destruktor</title>
+  <link rel='stylesheet' href='../style.css' />
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="../atom.xml" />
+  <link rel="image_src" href="../../logo.png" />
+  <!-- GOOGL ANAL --> 
+  <script>
+     var _gaq = [['_setAccount', 'UA-18813210-3'], ['_trackPageview']];
+     (function(d, t) {
+      var g = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      g.async = true;
+      g.src = '//www.google-analytics.com/ga.js';
+      s.parentNode.insertBefore(g, s);
+     })(document, 'script');
+  </script>
+</head>
+
+<body>
+<nav>
+  <section>
+    <ul>
+      <li style="float: left;"><a href="../index.htm">Back</a>
+      <li><a href="../atom.xml">RSS</a></li>
+    </ul>
+  </section>
+</nav>
+<header><pre>
+                   /\\\                                          
+                   \/\\\                                         
+                    \/\\\                                        
+ /\\/\\\\\\          \/\\\   /\\/\\\\\\\   /\\    /\\   /\\      
+ \/\\\////\\\    /\\\\\\\\\  \/\\\/////\\\ \/\\\  /\\\\ /\\\     
+  \/\\\  \//\\\  /\\\////\\\  \/\\\   \///  \//\\\/\\\\\/\\\     
+   \/\\\   \/\\\ \/\\\  \/\\\  \/\\\          \//\\\\\/\\\\\     
+    \/\\\   \/\\\ \//\\\\\\\/\\ \/\\\           \//\\\\//\\\     
+     \///    \///   \///////\//  \///             \///  \///     
+
+</pre>
+</header>
+<ul>
+   
+    </li><article>
+  
+<h3>regex й parsing expression grammars</h3>
+
+<p>Я довго не розумів силу в regex&rsquo;ах, але це таки сила. Колись давним-давно я не зміг розпарсити щось регекспом (якусь дурну валідацію) і навіть написав щось велосипедоподібне для цього — ех, юність :)</p>
+
+<p>Якщо ще додати до цього <code>grep</code>, <code>sed</code>, <code>awk</code> — не знаю, як я жив без цього. Тепер регулярно чищу всякі дані в sublime text regex&rsquo;ами й довольний як слон.</p>
+
+<p>Regex&rsquo;и — могутні, але їх писати — доволі напряжно, але є утиліти, що дуже допомагають</p>
+
+<ul>
+<li><a href="http://gskinner.com/RegExr">http://gskinner.com/RegExr</a><br /></li>
+<li><a href="http://www.regexper.com/">http://www.regexper.com/</a><br /></li>
+<li><a href="http://crotonresearch.com/graphrex/visualization/">http://crotonresearch.com/graphrex/visualization/</a></li>
+</ul>
+
+<p>Раніше я б злякався всяких штук, типу <code>#&quot;[^\.]+$&quot;</code> чи <code>#&quot;{start_tag}(?:.|[\\n\\r])*?{end_tag}</code>, але тільки нещодавно зрозумів наскільки це зручно.</p>
+
+<p>Щоправда, код парсити regex&rsquo;ами трохи &ldquo;не комільфо&rdquo;, тому планую розібратись з  <em>parsing expression grammars</em> (надихнувся <a href="http://ivan-gandhi.livejournal.com/2210613.html">цією</a> дискусією) — з чого б то почати?</p>
+
+
+    </article></li>
+</ul>  
+
+<div id="mc-container"></div>
+<script type="text/javascript">
+var mcSite = '11384';
+(function() {
+    var mc = document.createElement('script');
+    mc.type = 'text/javascript';
+    mc.async = true;
+    mc.src = 'http://cackle.me/mc.widget-min.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(mc);
+})();
+</script>
+<a href="http://cackle.me" id="mc-link"><b style="color:#4FA3DA">CACKL</b><b style="color:#F65077">E</b> comment system</a>
+
+<footer>
+  <section>&copy; <b>A. Sernyak</b> — all rights reserved. 2012-2013</section>
+  <section></section>
+</footer>
+
+</body>
+</html>

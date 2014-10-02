@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset=utf-8>
+  <meta name="author" content="Andrew Sernyak">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blog, Pt. 8 — URLs :: ndrw ze destruktor</title>
+  <link rel='stylesheet' href='../style.css' />
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="../atom.xml" />
+  <link rel="image_src" href="../../logo.png" />
+  <!-- GOOGL ANAL --> 
+  <script>
+     var _gaq = [['_setAccount', 'UA-18813210-3'], ['_trackPageview']];
+     (function(d, t) {
+      var g = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      g.async = true;
+      g.src = '//www.google-analytics.com/ga.js';
+      s.parentNode.insertBefore(g, s);
+     })(document, 'script');
+  </script>
+</head>
+
+<body>
+<nav>
+  <section>
+    <ul>
+      <li style="float: left;"><a href="../index.htm">Back</a>
+      <li><a href="../atom.xml">RSS</a></li>
+    </ul>
+  </section>
+</nav>
+<header><pre>
+                   /\\\                                          
+                   \/\\\                                         
+                    \/\\\                                        
+ /\\/\\\\\\          \/\\\   /\\/\\\\\\\   /\\    /\\   /\\      
+ \/\\\////\\\    /\\\\\\\\\  \/\\\/////\\\ \/\\\  /\\\\ /\\\     
+  \/\\\  \//\\\  /\\\////\\\  \/\\\   \///  \//\\\/\\\\\/\\\     
+   \/\\\   \/\\\ \/\\\  \/\\\  \/\\\          \//\\\\\/\\\\\     
+    \/\\\   \/\\\ \//\\\\\\\/\\ \/\\\           \//\\\\//\\\     
+     \///    \///   \///////\//  \///             \///  \///     
+
+</pre>
+</header>
+<ul>
+   
+    </li><article>
+  
+<p>As I am back to full-time work, I had no time to write some code for <a href="https://github.com/ndrew/stagosaurus">Stagosaurus</a>, so I&rsquo;ve just grabbed some of my old unpublished stuff.</p>
+
+<h3>Blog design: URLs</h3>
+
+<p>Urls are often underrated, but URL design for any web site is really important. Things tend to get screwed with the dynamic web sites as often technology dictates the url structure (like site.com/post?id=123), but there are ways of avoiding that — url rewrites, etc.</p>
+
+<p>URLs are universal, because any browser has url bar, so it would be smart to use urls for better user experience. Sceptics may say that now with social networks, site aggregators and rss urls are not that important, but I disagree.</p>
+
+<h4>Namespacing</h4>
+
+<p>One technique about designing urls is <em>namespacing</em> — grouping content by some category, so each category acts like an index or table of contents with links to specific pages under this category.</p>
+
+<p>Namespacing defines an agreement on where your content is, so after URL had been published it is bad idea to change it.</p>
+
+<h4>Querystrings</h4>
+
+<p><em>Querystrings</em> (GET params, like site.com/page?sort=asc) are used to specify behaviour of the page. Technical users can easy understand how change things without exploring ui at all.</p>
+
+<p>If your audience is not technical users it would be wise to use html5 browser history api for having urls for everything, especially when you web site is an single page web app.</p>
+
+<p>Also it could be temping to use js for changing state of the app, but having urls doubling that could be also valuable.</p>
+
+<h3>URL readability</h3>
+
+<p>Urls should have a semantic meaning and do not look like garbage.
+Urls are for humans, so they should be easily typed. For example, sticking to using dash instead of underscore saves few keystrokes for user. URLs shouldn&rsquo;t confuse user, they should say user that <em>he/she is here</em>.</p>
+
+<p>Good url could be writen on napkin/business card from memory (guerilla marketing!).</p>
+
+<p>Also using unicode urls is a not a good idea.</p>
+
+<h4>Technical stuff</h4>
+
+<ul>
+<li>www or not — does anybody still types that?</li>
+<li>letter casing — you can do that for really long domain names, like <a href="http://iwillgetthatjobatgoogle.tumblr.com/">IWillGetThatJobAtGoogle.tumblr.com</a>, but for other parts of the url it doesn&rsquo;t make many sense to me.</li>
+<li>trailing slashes — better to find way to work both with and without them</li>
+<li>ports — nope, maybe for test projects.</li>
+<li>plus/space/dash - dash.</li>
+</ul>
+
+<h3>Drawbacks</h3>
+
+<p>Having user friendly urls have some downsides. First is <em>security</em> — users can (and will) try hacking your website and looking intro img/ or admin/ urls. So putting empty index.htm is a must if you don&rsquo;t want to configure your web-server everytime.</p>
+
+<h3>My URL system</h3>
+
+<p>I&rsquo;ve given some thought about url system for sernyak.com. Basically there are two things here: personal info (portfolio/cv/etc.) and blog. Currently there is only blog there at the boring /blog/.</p>
+
+<p>To make portfolio things more user friendly I&rsquo;ll be sticking to the following convention:</p>
+
+<pre><code>sernyak.com/
+            is/web-developer
+
+            does/web-design
+            does/music
+
+            made/stagosaurus
+
+            ua              - ukrainian version 
+</code></pre>
+
+<p>Blogging urls are little trickier, because users should be able to access posts from different perspectives</p>
+
+<pre><code>sernyak.com/
+            blog/           - index page
+            about/blogging  — list of posts about blogging
+            2013/           - list of posts from 2013
+            2013/09         - list of posts from september 2013
+</code></pre>
+
+<h3>Bonus: favicons</h3>
+
+<p>Another thing that sits in the browser url bar is icon of your site. With html5 you can leverage benefits from a tiny icon of your site.
+Because url changes can go unnoticed, the changes in favicon will grab user attention, especially when you have dynamic content that changes rapidly over time. Some use for this purpose page title (like twitter adds number of new tweets in front of existing title). But you could use both. Or just don&rsquo;t use them :)</p>
+
+<p>Stay tuned.</p>
+
+
+    </article></li>
+</ul>  
+
+<div id="mc-container"></div>
+<script type="text/javascript">
+var mcSite = '11384';
+(function() {
+    var mc = document.createElement('script');
+    mc.type = 'text/javascript';
+    mc.async = true;
+    mc.src = 'http://cackle.me/mc.widget-min.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(mc);
+})();
+</script>
+<a href="http://cackle.me" id="mc-link"><b style="color:#4FA3DA">CACKL</b><b style="color:#F65077">E</b> comment system</a>
+
+<footer>
+  <section>&copy; <b>A. Sernyak</b> — all rights reserved. 2012-2013</section>
+  <section></section>
+</footer>
+
+</body>
+</html>

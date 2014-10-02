@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset=utf-8>
+  <meta name="author" content="Andrew Sernyak">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Веселі алгоритми :: ndrw ze destruktor</title>
+  <link rel='stylesheet' href='../style.css' />
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="../atom.xml" />
+  <link rel="image_src" href="../../logo.png" />
+  <!-- GOOGL ANAL --> 
+  <script>
+     var _gaq = [['_setAccount', 'UA-18813210-3'], ['_trackPageview']];
+     (function(d, t) {
+      var g = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      g.async = true;
+      g.src = '//www.google-analytics.com/ga.js';
+      s.parentNode.insertBefore(g, s);
+     })(document, 'script');
+  </script>
+</head>
+
+<body>
+<nav>
+  <section>
+    <ul>
+      <li style="float: left;"><a href="../index.htm">Back</a>
+      <li><a href="../atom.xml">RSS</a></li>
+    </ul>
+  </section>
+</nav>
+<header><pre>
+                   /\\\                                          
+                   \/\\\                                         
+                    \/\\\                                        
+ /\\/\\\\\\          \/\\\   /\\/\\\\\\\   /\\    /\\   /\\      
+ \/\\\////\\\    /\\\\\\\\\  \/\\\/////\\\ \/\\\  /\\\\ /\\\     
+  \/\\\  \//\\\  /\\\////\\\  \/\\\   \///  \//\\\/\\\\\/\\\     
+   \/\\\   \/\\\ \/\\\  \/\\\  \/\\\          \//\\\\\/\\\\\     
+    \/\\\   \/\\\ \//\\\\\\\/\\ \/\\\           \//\\\\//\\\     
+     \///    \///   \///////\//  \///             \///  \///     
+
+</pre>
+</header>
+<ul>
+   
+    </li><article>
+  
+<h1>Веселі алгоритми</h1>
+
+<p>Я ніколи не був гуру алгоритміки. Та й, в принципі, гуру структур даних — теж. Тому деколи я туплю над простенькими алгоритмами. Не те, щоб я не добивався результату, але мені здається що я вирішую багато чого неефективно. А хочеться, щоб алгоритм був елегантним.</p>
+
+<p>Отже в нас є масив, яким задане дерево. Типу</p>
+
+<pre><code>node1
+node1.leaf1
+node1.leaf2
+node1.subnode1.leaf1_1
+node2
+node3
+node3.subnode2
+node3.subnode2.leaf3_1
+…
+</code></pre>
+
+<p>де кожен елемент є об&rsquo;єктом, на кшталт</p>
+
+<pre><code>{
+    &quot;value&quot;: &quot;node1&quot;,
+    &quot;text&quot;: &quot;Super Puper Node&quot;
+} 
+</code></pre>
+
+<p>І з цього всього треба залишити тільки листки. Мова програмування ролі не грає, але в &ldquo;оригіналі&rdquo; це має бути або php(<em>vommit</em>) або js. Мій вибір, думаю очевидний)</p>
+
+<h1>1</h1>
+
+<p>Почнемо наш потік свідомості: а давайте посортуємо все ключу й просто відфільтруємо. Сказано — зроблено</p>
+
+<pre><code>var arr = [...];
+
+arr.sort(function(a,b) {
+    var x = a.value;
+    var y = b.value;
+    return ((x &lt; y) ? -1 : ((x &gt; y) ? 1 : 0));
+});
+
+
+if (arr.length &gt; 0 ) {
+    var res = [];
+    var added = 0;
+    var s = arr[0];
+    var parent = s.value;
+
+    for (var i = 1; i &lt; arr.length; i++ ) {
+        var z = arr[i];
+        if (z.value.indexOf(parent) === 0 ) { // starts with
+            res.push(z);
+            added++;
+        } else {
+            if (added === 0) {
+                res.push(s);
+            }
+            s = z;
+            parent = z.value;
+            added = 0;
+        }
+    }
+
+    var diff = arr.filter(function(i) {return !(res.indexOf(i) &gt; -1);});
+    console.log(diff); // show items that were filtered out
+
+    console.log(res);  // show the result
+}
+</code></pre>
+
+<p>Ніби працює. Ну можна ще parent випиляти, але це не критично. Давайте далі це все крутити, а то якось &ldquo;корявенько&rdquo;.</p>
+
+<h1>2</h1>
+
+<p>А якщо пройтись по масиву з кінця? Типу так:</p>
+
+<pre><code>var arr = [...];
+
+arr.sort(function(a,b) {
+    var x = a.value;
+    var y = b.value;
+    return ((x &lt; y) ? -1 : ((x &gt; y) ? 1 : 0));
+});
+
+if (arr.length &gt; 0 ) {
+    var rgxp = /(.*)\.([^.]*)$/; // extract parent
+    var res = [];
+
+    var added = 1;
+    var parent = null;
+
+    for (var i = arr.length-1; i &gt;= 0; i-- ) {
+        z = arr[i];
+        if (z.value == parent) {
+            if (added == 1) {
+                res.unshift(z);
+            } // else skip   
+        } else if (z.value.indexOf(parent) === 0 ) { // starts with
+            res.unshift(z); 
+            added++;
+        } else {
+            res.unshift(z);
+            var parts = rgxp.exec(z.value);
+            parent = !parts ? z.value : parts[1];
+        }
+    }
+
+    var diff = arr.filter(function(i) {return !(res.indexOf(i) &gt; -1);});
+    console.log(diff); // show items that were filtered out
+
+    console.log(res);  // show the result
+}
+</code></pre>
+
+<p>Все рівно — муть. Ще й регексп з&rsquo;явився.</p>
+
+<h1>3</h1>
+
+<p>А якщо використати якісь хитрі структури даних? Типу зробити дерево як</p>
+
+<pre><code>{
+    &quot;node1&quot; : {
+        &quot;leaf1&quot; : …
+        }
+}
+</code></pre>
+
+<p>Знову муть, не ясно куди текст всучити, ще й треба мінімум два рази бігати.</p>
+
+<h1>4</h1>
+
+<p>Тю, додамо &ldquo;функціональщини&rdquo;. Тупо відфільтровуємо &ldquo;в лоб&rdquo;</p>
+
+<pre><code>var arr = [...];
+
+arr.sort(function(a,b) {
+    var x = a.value;
+    var y = b.value;
+    return ((x &lt; y) ? -1 : ((x &gt; y) ? 1 : 0));
+});
+
+if (arr.length &gt; 0 ) {
+
+    var rgxp = /(.*)\.([^.]*)$/;
+
+    var filterFunc = function(z,i,a) {
+        if (i &lt; a.length-1) {
+            var parts = rgxp.exec(a[i+1].value);
+            var parent = !parts ? a[i+1].value : parts[1];
+            return z.value != parent;
+        }
+        return true;    
+    }
+
+    var res = arr.filter(filterFunc);
+
+    var diff = arr.filter(function(i) {return !(res.indexOf(i) &gt; -1);});
+    console.log(diff);
+
+    console.log(res);
+}
+</code></pre>
+
+<p>Лаконічненько. Але все ж не те. Чую, що регексу тут не місце.</p>
+
+<h1>5</h1>
+
+<p>Пробуємо без:</p>
+
+<pre><code>var arr = [...];
+
+arr.sort(function(a,b) {
+    var x = a.value;
+    var y = b.value;
+    return ((x &lt; y) ? -1 : ((x &gt; y) ? 1 : 0));
+});
+
+if (arr.length &gt; 0 ) {
+
+    var p = arr[0]; // 'global' state — evil?
+
+    var filterFunc = function(z,i,a) {
+        if (i &lt; a.length-1) {
+            if (a[i+1].value.indexOf(p.value) === 0) {
+                if (z.value == p.value) {
+                    return false;
+                } 
+            } else {
+                p = a[i+1];
+            }
+        }
+        return true;    
+    }
+
+    var res = arr.filter(filterFunc);
+
+    var diff = arr.filter(function(i) {return !(res.indexOf(i) &gt; -1);});
+    console.log(diff);
+
+    console.log(res);
+}
+</code></pre>
+
+<p>Ура! Регекс випиляли, правда довелось додати стан. Можна звісно було бігати й шукати батьківський кожен раз, але це знову ж таки зайві &ldquo;тєлодвіженія&rdquo;. Тому зупиняюсь на цьому варіянті. Чи є ще якісь ідеї, камради?</p>
+
+<p>Дякую за увагу, до наступних зустрічей в ефірі.</p>
+
+<p><strong>Update 1</strong></p>
+
+<p>як вказали в коментах, не всьо так добре як здавалось в 3ій ночі, й нашим лідером стає алгоритм №4, який нам наочно показує: менше if&rsquo;ів — менше проблем <code>:3</code>. Ну і тести, тести, тести.</p>
+
+
+    </article></li>
+</ul>  
+
+<div id="mc-container"></div>
+<script type="text/javascript">
+var mcSite = '11384';
+(function() {
+    var mc = document.createElement('script');
+    mc.type = 'text/javascript';
+    mc.async = true;
+    mc.src = 'http://cackle.me/mc.widget-min.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(mc);
+})();
+</script>
+<a href="http://cackle.me" id="mc-link"><b style="color:#4FA3DA">CACKL</b><b style="color:#F65077">E</b> comment system</a>
+
+<footer>
+  <section>&copy; <b>A. Sernyak</b> — all rights reserved. 2012-2013</section>
+  <section></section>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset=utf-8>
+  <meta name="author" content="Andrew Sernyak">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Товаришу, зроби собі блог! :: ndrw ze destruktor</title>
+  <link rel='stylesheet' href='../style.css' />
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="../atom.xml" />
+  <link rel="image_src" href="../../logo.png" />
+  <!-- GOOGL ANAL --> 
+  <script>
+     var _gaq = [['_setAccount', 'UA-18813210-3'], ['_trackPageview']];
+     (function(d, t) {
+      var g = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      g.async = true;
+      g.src = '//www.google-analytics.com/ga.js';
+      s.parentNode.insertBefore(g, s);
+     })(document, 'script');
+  </script>
+</head>
+
+<body>
+<nav>
+  <section>
+    <ul>
+      <li style="float: left;"><a href="../index.htm">Back</a>
+      <li><a href="../atom.xml">RSS</a></li>
+    </ul>
+  </section>
+</nav>
+<header><pre>
+                   /\\\                                          
+                   \/\\\                                         
+                    \/\\\                                        
+ /\\/\\\\\\          \/\\\   /\\/\\\\\\\   /\\    /\\   /\\      
+ \/\\\////\\\    /\\\\\\\\\  \/\\\/////\\\ \/\\\  /\\\\ /\\\     
+  \/\\\  \//\\\  /\\\////\\\  \/\\\   \///  \//\\\/\\\\\/\\\     
+   \/\\\   \/\\\ \/\\\  \/\\\  \/\\\          \//\\\\\/\\\\\     
+    \/\\\   \/\\\ \//\\\\\\\/\\ \/\\\           \//\\\\//\\\     
+     \///    \///   \///////\//  \///             \///  \///     
+
+</pre>
+</header>
+<ul>
+   
+    </li><article>
+  
+<h2>Товаришу,<br> зроби собі блог!</h2>
+
+<p>Я давно закрив свій <a href="http://programist1989.livejournal.com">попередній блог</a> <sup><a href="#footer1">1</a></sup>, розпочатий ще у далекому 2006-му. Перші півроку я туди нічого не писав, бо був юний й не розумів навіщо взагалі блоги, а коли почав писати, то писав, в основному, булшіт.</p>
+
+<p>Потім якось все перелізло в соціальні мережі: <a href="http://www.facebook.com/iamndrw">fb</a>,<a href="http://vk.com/ndrwbt">vk</a>, <a href="https://twitter.com/#!/__ndrw">твіттер</a>, й вся моя інтернет-активність поволі перенеслась туди. Проте великий(чи радше грунтовний) пост в соц. мережі не напишеш, й тим більше красиво не оформиш, тому без блога ніяк. Спочатку я хотів завести звичайний wordpress&rsquo;івський блог, але за їхню адмінку хтось горітиме в пеклі, а за процес допилювання тем — поготів. Це все кажу зі свого досвіду, ібо колись інтегрував php&rsquo;шний календарик в <a href="http://garazh13.hmarka.net">бложек гаражика</a> і я вам скажу — це кромєшний ад. Але чомусь WP котірується. Але нічо, он люди Бібера слухають. І нічо.</p>
+
+<p>Далі я перепробував купу php&rsquo;шних говноблогодвіжків (лайноблігодвигунців?) й всяких CMS різної ступені &ldquo;ущербності&rdquo;, бо в мене було натхнення, хостинг від ХостПро на 8 гіг(куплений для сайту гаражика) і на якому було тільки php(<em>бє</em>) із mysql&rsquo;ом. Там я перепробував різні вікі(<a href="http://www.mediawiki.org/wiki/MediaWiki">mediawiki</a>, <a href="lionwiki.0o.cz/">lionwiki</a> — на файлах), блоги(<a href="http://wordpress.com/">wordpress</a>, <a href="http://chyrp.net/">chyrp</a>), CMS&rsquo;ки(<a href="http://ookuwagata.net78.net/">Ookuwagata</a>, <a href="http://grabaperch.com/">perch</a>, <a href="agiletoolkit.org">agileToolkit</a>) і всюди якось все було або через одне місце, або настільки ущербно, що я навіть не наважувався це показувати світові й щось туди писати.</p>
+
+<p>Проте це був який-не-який досвід, який змусив мене багато думати про причини навіщо мені блог і яким повинен він повинен бути.</p>
+
+<h2><strike>Блог</strike>Сайт</h2>
+
+<p>По-перше, я зрозумів що я хотів <strong>сайт</strong>, а не <em>блог</em>. Олдскульний такий хоум-пейдж: де, що хочу те й роблю. І звісно, що блог-сервіси чи блогодвигунці мені не підійдуть <strike>ібо я гіпстер</strike>, бо вони мають сенс тільки доти, доки потрібен махровий блог і нічого іншого: крок вліво-вправо — починається пекло.</p>
+
+<p>По-друге, весь цей пошук ідеального формату мене наштовхнув на те, що сайт має бути максимально простим, без rocket science&rsquo;а, без N мегабайт коду вордпресу, бази даних, розставляння милиць та іншого ментального сексу. Вобщєм simplicity matters.</p>
+
+<p>Тому я одразу відкинув всіляки джумли, друпали й іншу mvc&rsquo;шну єресь і почав дивитись на різні езотеричні cms&rsquo;ки які б підійшли такому збоченцю як я.<br />
+Критерій був простий: якомога більше <i>essence</i> і якомога менше <i>ceremony</i> <sup><a href="#footer2">2</a></sup>, але чомусь більшість CMS не підпадали під цей критерій, хоча здавалось, що критерій є розумним й дружить із common sense. Проте, дещо я все таки знайшов.</p>
+
+<h3>CMS в дусі мінімалізму</h3>
+
+<p>Цілий клас CMS, головним принципом яких є &ldquo;бути простими як двері&rdquo; <sup><a href="#footer3">3</a></sup>. Часто це cms, що взагалі не використовуюють базу данних(ібо це страшний оверхед), а просто пишуться у файлову систему. Чим чудові такого типу cms, що через малий розмір їх можна легко зрозумітити, embedd&rsquo;ити куди завгодно й так само просто звідти випилювати.</p>
+
+<p><strong><p style="text-align: center">Менше коду &rarr; менша складність, менша складність &rarr; менше геморою.</p></strong></p>
+
+<p>Ще одною перевагою мінімалістичних CMS(як і бібліотек) є те, щл в них майже немає convention, на відміну від всяких страшних веб фреймворків, а-ля Zend чи Drupal, де convention — наше всьо. Тобто мінімальні CMS працюють через агрегацію, а не через наслідування. А всі знають, що треба <a href="http://en.wikipedia.org/wiki/Composition_over_inheritance">prefer composition over inheritance</a>.</p>
+
+<p>З того, що я перепробував й що мені сподобалось:</p>
+
+<ul>
+<li><p><a href="http://grabaperch.com/">Perch</a> — CMS з одніє функцією, ніякого сексу із шаблонами, просто береться шаблон в html, і там де має бути динамічний контент, вставляємо виклик функції. Найбільший мінус — ціна, адже perch платний. Але ідея — гут.</p></li>
+
+<li><p><a href="http://agiletoolkit.org/">Agile Toolkit</a> — об&rsquo;єктно-орієнтована CMS на php(<em>бє</em>), якій треба аплодувати стоячи, бо там все семантично дуже зрозуміло й код можна читати як книжку. Єдине, що для темплейтів прийдеться вивчати ще один недо-DSL, тому ця CMS радше для програмістів, а не для юзерів. Але те, що замість дурнуватого MVC, де одну зрозумілу сутність(Page наприклад) розбивають на три(а в HMVC взагалі на N) доволі абстрактних(і через що — незрозумілих) сутності, ми використовуємо об&rsquo;єктну модель із зрозумілою семантикою — класи Backend, Frontend, Page й т.д. Імхо, круто.</p></li>
+
+<li><p><a href="http://jekyllbootstrap.com/">Jekyll</a> - генератор статичних сайтів на рубі, який можна прикрутити до <a href="http://pages.github.com/">GitHub Pages</a>. Чо, макбук в мене вже є, отже рубі я повинен люто любити. Але щось в мене з ним не зрослось(я про рубі). Ну і я колись надибав годну статтю <a href="http://habrahabr.ru/post/142287/">на хабрі</a>(тільки не пинайте), де Jekyll загнобили, а автор написав свій Jekyll із блудницями й блекжеком на <a href="http://golang.org/">go</a>. Ну а чим я гірше.</p></li>
+</ul>
+
+<h2>Результат</h2>
+
+<p>Трохи розбирань — і я наклепав простенький генератор html&rsquo;а із <a href="http://daringfireball.net/projects/markdown/">markdown</a>-файлів, теж на <a href="http://golang.org">go</a>(до речі, кумедна й жвава мова — милий такий сішнячок, мімімі, рекомендую), додав RSS до цього всього(своїми кровними руками), підключив коментарі(взяв <a href="http://cackle.me/">cackle</a>, а не Discus — я ж хіпстер), ну й покорчив із себе веб-дезігнера (чи то пак — технолога): HTML5, CSS3, вінтажне лого, responsive web design(порозтягуйте вікно браузера), лишилось ще правда всьо запхати в grid, але це якось згодом.</p>
+
+<p>Пости на серверок заливаються git&rsquo;ом, тобто спочатку я генерую html локально, перевіряю, потім комічу нові пости й через хвилину серверок по cron&rsquo;у підтягне зміни. Таке от.</p>
+
+<p><a id="footer1"></a>1: Був ще самописний блог зроблений на 1-му курсі, але це не рахується. Виглядав він, до речі, <a href="img/blog_fcss.png" target="_blank">так</a>.<br />
+<a id="footer2"></a>2: Див. презентацію Stuart Halloway &ldquo;<a href="http://www.infoq.com/presentations/Clojure-Towards-The-Essence-Of-Programming">Clojure: Towards The Essence Of Programming</a>&rdquo;<br />
+<a id="footer3"></a>3: Door — чудова назва для мінімалістичної cms. Дарую.</p>
+
+
+    </article></li>
+</ul>  
+
+<div id="mc-container"></div>
+<script type="text/javascript">
+var mcSite = '11384';
+(function() {
+    var mc = document.createElement('script');
+    mc.type = 'text/javascript';
+    mc.async = true;
+    mc.src = 'http://cackle.me/mc.widget-min.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(mc);
+})();
+</script>
+<a href="http://cackle.me" id="mc-link"><b style="color:#4FA3DA">CACKL</b><b style="color:#F65077">E</b> comment system</a>
+
+<footer>
+  <section>&copy; <b>A. Sernyak</b> — all rights reserved. 2012-2013</section>
+  <section></section>
+</footer>
+
+</body>
+</html>
