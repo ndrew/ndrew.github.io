@@ -65,17 +65,17 @@
 
         function formatter(text) {
           var cfg = {
-            'i': 'i', 
+            'і': 'i', 
             'І': 'I',
             'ї': 'ï', 
             'Ї': 'Ï'
           };
-          
-          function replacer(match) {
-            return cfg[match] ? cfg[match] : match;
-          }
-          return text.replace(/[A-Z]/g, replacer);
-        }
+
+            for (var x in cfg) {
+                text = text.replace(new RegExp(x, 'g'), cfg[x]);
+            }
+            return text;          
+       }
 
         window.onload = function() {
             
