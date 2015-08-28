@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ua">
+  <head>
+    <meta charset="utf-8">
+    <title>типоhrаф</title>
+    <style>
+
+    @font-face {
+        font-family: "Arkiv Bold1";
+        src: url("Arkiv-Bold.otf") format("opentype");
+    }
+
+    body {
+        font-family: "Arkiv Bold1", "Arkiv Bold";
+        font-weight: bold;
+        
+        font-size: 24pt;
+        
+        padding: 0;
+        margin: 0;
+    }
+
+    header {
+        padding: 3rem;
+        background-color: rgb(231,79,93);
+        margin-bottom: 1rem;
+        color: white;
+    }
+
+    #editor,#result {
+        padding: 1rem;
+        margin: 1rem;
+        
+        letter-spacing: 5px;
+    }
+    
+    #editor {
+        outline: 5px solid black;
+    }
+
+    #result {
+        background-color: rgba(128,128,129, 0.1);
+    }
+
+    </style>
+  </head>
+  <body>
+
+    <header id="header"></header>
+    
+    <div contenteditable="true" id="editor" onclick="selecta(this);">§ замінює ненависні літери 'i' 'I' 'ï' 'Ï' — на нормальні</div>
+    <div style="text-align:center;">&darr;</div>
+    <div id="result">...</div>
+
+    <script>
+        function selecta(el) {
+            var range = document.createRange();
+            range.selectNodeContents(el);
+            var sel = window.getSelection();
+            if (sel.toString() == "") {
+                sel.removeAllRanges();
+                sel.addRange(range);
+            } 
+        }
+
+        function formatter(text) {
+          var cfg = {
+            'i': 'i', 
+            'І': 'I',
+            'ї': 'ï', 
+            'Ї': 'Ï'
+          };
+          
+          function replacer(match) {
+            return cfg[match] ? cfg[match] : match;
+          }
+          return text.replace(/[A-Z]/g, replacer);
+        }
+
+        window.onload = function() {
+            
+            var handler = function(e) {
+                var text = e.currentTarget.innerHTML;
+                document.getElementById('result').innerHTML = formatter(text);                
+            };
+            
+            var editor = document.getElementById("editor");
+            editor.addEventListener("input", handler, false);
+            editor.addEventListener("DOMNodeInserted", handler, false);
+            editor.addEventListener("DOMNodeRemoved", handler, false);
+            editor.addEventListener("DOMCharacterDataModified", handler, false);
+
+
+            // svg header stuff
+        
+            var boxText = "ТИПОГРАФ";
+            var boxWidth = 500;
+            var boxHeight = 100;
+        
+            var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+            svg.setAttributeNS (null, "viewBox", "0 0 " + boxWidth + " " + boxHeight);
+            svg.setAttributeNS (null, "width", boxWidth);
+            svg.setAttributeNS (null, "height", boxHeight);
+            svg.style.display = "block";
+                    
+            var svgNS = svg.namespaceURI;
+            
+            var svgEl = function(tag, props) {
+                var el = document.createElementNS(svgNS,tag);
+                for (var key in props) {
+                  if (props.hasOwnProperty(key)) {
+                    el.setAttribute(key, props[key]);
+                  }
+                }
+                return el;
+            }
+        
+        
+            var rect = svgEl('rect', {
+                  'x': 5,
+                  'y': 35,
+                  'width': 260,
+                  'height': 50,
+                  'stroke': '#ffffff',
+                  'stroke-width': '5px',
+                  'stroke-linecap': 'round',
+                  'fill': 'transparent'
+            }); 
+        
+        
+            var text = svgEl('text', {
+                "x": 15,     
+                "y": 73, 
+                "font-size": "28pt",
+                "font-family": "\"Arkiv\", \"Arkiv-Bold\", \"Arkiv Bold1\"",
+                "font-weight": "bold",
+                "letter-spacing": "5px",
+                "fill": "#ffffff"
+            });
+            
+        
+            var textNode = document.createTextNode(boxText);
+            text.appendChild(textNode);
+        
+            var polyline = svgEl('polyline', {
+                'points': '5,35 320,5 265,35 320,5 267,84',
+        
+                  'stroke': '#ffffff',
+                  'stroke-width': '5px',
+                  'stroke-linecap': 'round',
+                  'fill': 'transparent'
+            })
+        
+            svg.appendChild(text);
+            svg.appendChild(polyline);
+            svg.appendChild(rect);
+        
+            document.getElementById('header').appendChild(svg);
+
+        };
+    </script>
+  </body>
+</html>
