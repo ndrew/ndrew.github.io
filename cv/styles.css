@@ -1,192 +1,223 @@
 body {
-        margin: 0 auto;
-        width: 720px;
-  
-  
-	font-family: Helvetica;
-	font-weight: 300;
+  margin: 0 auto;
+  width: 720px;
 
-	line-height: 150%;
+  font-family: Helvetica;
+  font-weight: 300;
 
-	font-size: .9rem;
+  line-height: 150%;
 
+  font-size: .9rem;
 }
 
+
 article {
-/*	outline: 1px solid red;*/
-	margin-bottom: 1rem;
+  margin-bottom: 1rem;
 }
 
 article > header {
-/*	outline: 1px solid blue;*/
-	font-weight: 400;
-	font-size: 1.25rem;
+  font-weight: 400;
+  font-size: 1.2rem;
 
-	margin-top: .5rem;
-	padding-bottom: .25rem;
+  line-height: 2.5rem;
+
+
+  /*margin-top: .5rem;
+  padding-bottom: .25rem;*/
 
 }
 
-/*article > header:after {
-	content: ":";
+.work > section {
+  margin-left: 2rem;
 }
-*/
+
+/* grid */
+
+
+
+
+.third {
+  display: inline-block;
+  vertical-align: top;
+  font-size: .8rem;
+}
+
+.col1 {
+  width: 30%;
+  margin-right: 2%;
+
+}
+
+.col2 {
+  width: 30%;
+  margin-right: 2%;
+
+}
+
+.col2_3 {
+  width: 60%;
+  margin-right: 2%;
+
+}
+
+
+.col3 {
+  width: 30%;
+  margin-right: 2%;
+
+}
+
+
+.third header {
+  font-weight: 400;
+  font-size: 1rem;
+
+}
+
+.third ul {
+  list-style: none;
+  margin: 0;
+  padding-right: .5rem;
+}
+
+.third p {
+  line-height: 150%;
+  margin: 0;
+
+  -ms-word-break: keep-all;
+  word-break: keep-all;
+
+  // Non standard for webkit
+  word-break: keep-word;
+
+  -webkit-hyphens: manual;
+  -moz-hyphens: manual;
+  hyphens: manual;
+
+}
+
+
+.profile {
+  margin-top: 3rem;
+}
+
+
+.profile header {
+  font-weight: 900;
+  font-size: 2rem;
+  line-height: 100%;
+
+  text-shadow: 2px 2px 0px rgba(150, 150, 150, 0.25);
+}
+
+
+.profile .photo {
+  width: 13.2rem;
+  float: right;
+}
+
+
+
+
 
 .addr {
-	font-size: .9rem;
-	margin-left: 1rem;
-	line-height: 140%;
+  font-size: .9rem;
+  margin-left: 2rem;
+
+  line-height: 140%;
+
 }
 
 .addr span:first-child {
-	float: left;
-	margin-right: .5rem;
-	font-weight: bolder;
+  float: left;
+  margin-right: .5rem;
+  font-weight: bolder;
 }
 
 .addr span:first-child:after {
-	content: ":";
+  content: ":";
 }
 
 
 .addr p {
-	line-height: 150%;
-	margin: 0;
+  line-height: 150%;
+  margin: 0;
 }
+
+
 
 .work {
 
 }
 
 .work section {
-	margin-bottom: 1rem;
+  margin-bottom: 1rem;
 }
 
 .work section header {
-	display: none;
-	font-weight: bold;
+  display: none;
+  font-weight: bold;
 }
 
 .work section .dates {
-	/*float: right;*/
-	display: block;
+  /*float: right;*/
+  display: block;
 }
 
 .work section .employer {
-	display: inline;
+  display: inline;
 }
 
 .work section .employer:before {
-	content: " @ ";
+  content: " @ ";
 }
 
 .work section .position {
-	font-weight: 500;
+  font-weight: 500;
 }
+
+
 
 .main {
 }
 
-.photo {
-	width: 10rem;
-	float: right;
-	/*position: absolute;
-	top: 0;
-	right: 0;*/
-
-	
-}
 
 .education span:first-child {
-	float: right;
-	display: inline;
-	/* vertical-align: super;
-	font-size: .5rem;	
-	line-height: 150%; */
+  float: right;
+  display: inline;
+  /* vertical-align: super;
+  font-size: .5rem;
+  line-height: 150%; */
 }
 
 .education span:last-child {
-	max-width: 85%;
-	display: block;
+  max-width: 85%;
+  display: block;
 
-	white-space: pre-wrap;
-	margin-left: 1rem;
-	/*background-color: red;*/
+  white-space: pre-wrap;
+  margin-left: 1rem;
+  /*background-color: red;*/
 }
+
+
 
 .education header:nth-of-type(2) {
-	outline: 1px solid red;
-	display: none;
-
-}
-
-.third {
-	display: inline-block;
-	vertical-align: top;
-	font-size: .8rem;
-}
-
-.col1 {
-	width: 30%;
-	margin-right: 2%;
-
-}
-
-.col2 {
-	width: 30%;
-	margin-right: 2%;
-
-}
-
-.col2_3 {
-	width: 60%;
-	margin-right: 2%;
+  outline: 1px solid red;
+  display: none;
 
 }
 
 
-.col3 {
-	width: 30%;
-	margin-right: 2%;
 
-}
-
-
-.third header {
-	font-weight: 400;
-	font-size: 1rem;
-
-}
-
-.third ul {
-	list-style: none;
-	margin: 0;
-	padding-right: .5rem;
-}
-
-.third p {
-	line-height: 150%;
-	margin: 0;
-
--ms-word-break: keep-all;
-     word-break: keep-all;
-
-     // Non standard for webkit
-     word-break: keep-word;
-
--webkit-hyphens: manual;
-   -moz-hyphens: manual;
-        hyphens: manual;
-
-}
-
-#pdf {
-	position: absolute;
-	top: .5rem;
-	right: 1rem;
-
-}
 
 .moar-details {
 }
 
+
+
+#pdf {
+  position: absolute;
+  top: .5rem;
+  right: 1rem;
+
+}
