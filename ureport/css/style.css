@@ -1,0 +1,92 @@
+/* some style */
+
+.app {
+  font-family: "Andale Mono", fixed;
+
+  background-color: rgba(128,127,127,0.1);
+  padding: 1rem;
+}
+
+.app .header {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.app .question {
+  margin-bottom: 4rem;
+}
+
+
+.app .hypotheis {
+  /*margin-top: 2.5rem;
+  margin-bottom: 2.5rem;*/
+}
+
+.app .hypotheis .distribution {
+  padding: 1rem;
+}
+
+
+.app .hypotheis .text {
+  /*font-weight: bold;*/
+  /*margin-bottom: 1rem;*/
+}
+
+
+
+.app .hypotheis-groupped {
+/*  margin-top: 1rem;
+  margin-bottom: 2.5rem; */
+}
+
+
+.app .hypotheis-groupped header {
+  font-size: .9rem;
+  width: 80%;
+  border-bottom: 1px solid gray;
+  margin-bottom: 1rem;
+  margin-left: 1rem;
+}
+
+.hypotheis-groupped .hypotheis {
+ margin-left: 2rem;
+  margin-top: 1rem;
+
+}
+
+.hypotheis-groupped .hypotheis .text {
+  font-weight: normal;
+  font-size: .8rem;
+}
+
+.result {
+  font-size: .75rem;
+
+  background-color: rgba(128,128,128,0.25);
+  min-width: 15%;
+
+  margin-bottom: 1px;
+
+  padding: .1rem;
+}
+
+.result .percent {
+  font-weight: bolder;
+  margin-right: .5rem;
+}
+
+.result .from:before {
+  content: "(";
+}
+
+.result .from:after {
+  content: ") — ";
+}
+
+
+.toggle {
+  padding: .1rem;
+  background-color: rgba(128,128,128,0.1);
+  color: blue;
+}
+
