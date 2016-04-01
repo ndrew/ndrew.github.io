@@ -118,14 +118,15 @@ var phrases = [
     "пальмы вялых хуйцов",
     "холивары немытой хурмы",
     "пиздюк эко бокапоров",
-    "анальные шарики для барби"
+    "анальные шарики для барби",
+    "вы гениальные пиздюки!"
 ];
 
 window.ppp = phrases;
 
 function boo() {
   var data = window.ppp;
-  
+
   var phrase = data[Math.floor(Math.random()*data.length)];
   
    var el = document.getElementById("phrase");
