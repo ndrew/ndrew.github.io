@@ -605,6 +605,22 @@ aside section a {
 }
 
 
+nav {
+  display: flex;  
+  flex-flow: row wrap;
+  width: 90vw;
+}
+
+nav a {
+  margin-right: .5rem;
+}
+
+nav a.back {
+ margin-right: auto;
+}
+
+
+
 /* CV */
 
 .education span:first-child {
@@ -645,48 +661,17 @@ aside section a {
 
 .work section .employer {
   display: inline;
+  font-style: oblique;;
 }
 
 .work section .employer:before {
   content: " @ ";
 }
 
-.work section .position {
-  font-weight: 500;
+.work .position {
+  font-weight: 800;
 }
 
-.profile {
-  margin-top: 3rem;
-}
-
-
-.profile header {
-  font-weight: 900;
-  font-size: 2rem;
-  line-height: 100%;
-
-  text-shadow: 2px 2px 0px rgba(150, 150, 150, 0.25);
-}
-
-
-.profile .photo {
-  width: 13.2rem;
-  float: right;
-}
-
-.addr {
-  line-height: .5;
-}
-
-.addr span:first-child {
-  float: left;
-  margin-right: .5rem;
-  font-weight: bolder;
-}
-
-.addr span:first-child:after {
-  content: ":";
-}
 
 
 
