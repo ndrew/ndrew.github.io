@@ -146,66 +146,12 @@ article > header {
 
 
 
-.work {
-
-}
-
-.work section {
-  margin-bottom: 1rem;
-}
-
-.work section header {
-  display: none;
-  font-weight: bold;
-}
-
-.work section .dates {
-  /*float: right;*/
-  display: block;
-}
-
-.work section .employer {
-  display: inline;
-}
-
-.work section .employer:before {
-  content: " @ ";
-}
-
-.work section .position {
-  font-weight: 500;
-}
 
 
 
 .main {
 }
 
-
-.education span:first-child {
-  float: right;
-  display: inline;
-  /* vertical-align: super;
-  font-size: .5rem;
-  line-height: 150%; */
-}
-
-.education span:last-child {
-  max-width: 85%;
-  display: block;
-
-  white-space: pre-wrap;
-  margin-left: 1rem;
-  /*background-color: red;*/
-}
-
-
-
-.education header:nth-of-type(2) {
-  outline: 1px solid red;
-  display: none;
-
-}
 
 
 

@@ -661,7 +661,7 @@ nav a.back {
 
 .work section .employer {
   display: inline;
-  font-style: oblique;;
+  font-style: oblique;
 }
 
 .work section .employer:before {
@@ -673,6 +673,10 @@ nav a.back {
 }
 
 
+body > nav {
+  display: none;
+}
 
-
-
+body > header {
+  display: none;
+}
