@@ -603,3 +603,91 @@ aside section a {
   padding-left: .5rem;
   padding-top: .3333rem;
 }
+
+
+/* CV */
+
+.education span:first-child {
+  float: right;
+  display: inline;
+}
+
+.education span:last-child {
+  max-width: 85%;
+  display: block;
+
+  white-space: pre-wrap;
+  margin-left: 1rem;
+}
+
+.education header:nth-of-type(2) {
+  outline: 1px solid red;
+  display: none;
+}
+
+.work {
+
+}
+
+.work section {
+  margin-bottom: 1rem;
+}
+
+.work section header {
+  display: none;
+  font-weight: bold;
+}
+
+.work section .dates {
+  /*float: right;*/
+  display: block;
+}
+
+.work section .employer {
+  display: inline;
+}
+
+.work section .employer:before {
+  content: " @ ";
+}
+
+.work section .position {
+  font-weight: 500;
+}
+
+.profile {
+  margin-top: 3rem;
+}
+
+
+.profile header {
+  font-weight: 900;
+  font-size: 2rem;
+  line-height: 100%;
+
+  text-shadow: 2px 2px 0px rgba(150, 150, 150, 0.25);
+}
+
+
+.profile .photo {
+  width: 13.2rem;
+  float: right;
+}
+
+.addr {
+  line-height: .5;
+}
+
+.addr span:first-child {
+  float: left;
+  margin-right: .5rem;
+  font-weight: bolder;
+}
+
+.addr span:first-child:after {
+  content: ":";
+}
+
+
+
+
