@@ -253,7 +253,7 @@ hr:before {
 
 a:link, header nav a:visited {
   text-decoration: none;
-  border-bottom: 1px solid #05A4D5;
+  border-bottom: 1px solid rgba(5,164,213, .18);
   box-sizing: border-box;
   color: #05A4D5; /*#659FBB*/
 
@@ -262,9 +262,10 @@ a:link, header nav a:visited {
 
 
 a:hover, a:visited:hover {
-  background-color: #05A4D5; 
+  /*background-color: #05A4D5; 
   color: #fff;
-  border-bottom-color: #000;
+  border-bottom-color: #000;*/
+  font-weight: bold;
 }
 
 a:visited {
@@ -623,26 +624,17 @@ nav a.back {
 
 /* CV */
 
-.education span:first-child {
-  float: right;
-  display: inline;
+/*.education span:first-child {
+  display: block;
 }
 
 .education span:last-child {
-  max-width: 85%;
-  display: block;
+  padding-left: 1.5rem;
+}*/
 
-  white-space: pre-wrap;
-  margin-left: 1rem;
-}
 
-.education header:nth-of-type(2) {
-  outline: 1px solid red;
-  display: none;
-}
-
-.work {
-
+.work, .education {
+  margin-bottom: 3rem;
 }
 
 .work section {
