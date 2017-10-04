@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Final countdown</title>
+<style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            position: relative;
+        }
+        .layer {
+            padding: 10px;
+            position: relative;
+            z-index: 2;
+        }
+        .resume-btn,
+        .pause-btn {
+            display: none;
+        }
+        .paused .resume-btn,
+        .running .pause-btn {
+            display: inline-block;
+        }
+        .paused .pause-btn {
+            display: none !important;
+        }
+        #display {
+            font-family: "Liberation Mono", Mono, serif;
+            font-size: 400px;
+            text-align: center;
+        }
+        #minutes, #seconds {
+            width: 3em;
+        }
+        #progress {
+            background: #99ccff;
+            position: absolute;
+            width: 100%;
+            bottom: 0;
+        }
+        .timer__total {
+            color: #aaa;
+            font-size: 80%;
+        }
+    </style>
+
+
+<script
+  src="https://code.jquery.com/jquery-2.2.4.min.js"
+  integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+  crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+/* <![CDATA[ */
+$(function () {
+
+    function showDoneActions() {
+        var $A = $("#actions");
+
+        $A.html();
+        if (!localStorage.actions) { 
+            return;
+        }
+
+        var actions = JSON.parse(localStorage.actions);
+
+        for (var i = 0; i < actions.length; i++) {
+            var action = actions[i];
+
+            $A.append($("<li>").text(action.t + " " + action.action));
+        }
+    }
+
+
+    function padZero(str) {
+        return ("00" + str).substr(-2);
+    }
+
+    function parseValue(str) {
+        str = $.trim("" + str);
+        return str === "" ? 0 : parseInt(str);
+    }
+
+    var Timer = function(m, s, root) {
+        this.total = this.scheduled = Timer.toSeconds(m, s);
+        this.root = root;
+    };
+
+    Timer.toSeconds = function (m, s) {
+        return m * 60 + s;
+    };
+
+    Timer.prototype = {
+        run: function () {
+            var me = this;
+            function intervalCallback() {
+                var t = me.getRest(),
+                    cm = parseInt(t / 60),
+                    cs = parseInt(t - cm * 60);
+                if (t <= 0) {
+                    me.stop();
+                    $(me.root).trigger("update.timer", [0, 0]);
+                    $(me.root).trigger("alarm.timer");
+                } else {
+                    $(me.root).trigger("update.timer", [cm, cs]);
+                }
+            }
+            this.stop();
+            this.startTime = new Date();
+            this.interval = setInterval(intervalCallback, 1000);
+            $(this.root).trigger("run.timer");
+            intervalCallback();
+        },
+        pause: function () {
+            this.stop();
+            this.scheduled = this.getRest();
+            $(this.root).trigger("pause.timer");
+        },
+        stop: function () {
+            if (this.interval) {
+                clearInterval(this.interval);
+                delete this.interval;
+            }
+            $(this.root).trigger("stop.timer");
+        },
+        getRest: function () {
+            return this.scheduled - Math.round((new Date() - this.startTime) / 1000);
+        }
+    };
+
+    var timer, totalTimer;
+
+    $("#timer").bind({
+        "submit": function () {
+
+            var m = parseValue($("#minutes").val()),
+                s = parseValue($("#seconds").val());
+
+            if (!isNaN(m) && !isNaN(s)) {
+                if (timer && timer.stop) {
+                    timer.stop();
+                }
+                timer = new Timer(m, s, "#timer");
+                timer.run();
+            }
+
+            $(this).each(function () {
+                var $total = $(".timer__total", this);
+                if ($total.length === 0) {
+                    $total = $('<span class="timer__total"></span>').appendTo(this);
+                }
+
+                if (totalTimer) {
+                    clearTimeout(totalTimer);
+                }
+
+                var now = +new Date();
+                (function total() {
+                    var t = Math.round(((+new Date()) - now) / 1000);
+                    var m = parseInt(t / 60);
+                    var s = parseInt(t - m * 60);
+                    $total.html(padZero(m) + ":" + padZero(s));
+                    totalTimer = setTimeout(total, 1000);
+                }());
+            });
+
+            return false;
+        },
+
+        "run.timer": function () {
+            $(this).addClass("running").removeClass("paused");
+        },
+
+        "pause.timer": function () {
+            $(this).addClass("paused");
+        },
+
+        "stop.timer": function () {
+            $(this).removeClass("running paused");
+        },
+
+        "alarm.timer": function () {
+
+            var actions = [];
+            if (!localStorage.actions) { 
+                localStorage.actions = [];
+            }
+
+            actions.push({
+                "action": $("#action").val(),
+                "timer": $("#minutes").val() + ":" + $("#seconds").val(),
+                "t": (new Date()).toLocaleDateString()
+            });
+
+            localStorage.actions = JSON.stringify(actions);
+
+            showDoneActions();
+
+            $("#alarm").each(function () {
+                if ($.isFunction(this.play)) {
+                    this.play();
+                }
+            });
+        },
+
+        "update.timer": function (e, m, s) {
+            $("#m").html(padZero(m));
+            $("#s").html(padZero(s));
+
+            document.title = $("#display").text();
+
+            var progress = $("#progress");
+            if (!progress.length) {
+                progress = $('<div id="progress"></div>').appendTo("body");
+            }
+            progress.height((100 * Timer.toSeconds(m, s) / timer.total) + "%");
+        }
+    });
+
+    $("#timer input.pause-btn").bind("click", function () {
+        if (timer && timer.pause) {
+            timer.pause();
+        }
+    });
+
+    $("#timer input.resume-btn").bind("click", function () {
+        if (timer && timer.run) {
+            timer.run();
+        }
+    });
+
+    showDoneActions();
+});
+/* ]]> */
+    </script>
+</head>
+<body>
+<div class="layer">
+    <form id="timer" action="#">
+        <input id="action" value="..." style="width: 98vw;">
+
+        <input id="minutes" name="minutes" value="05" />&nbsp;:&nbsp;<input id="seconds" name="seconds" value="00" />
+        <input type="submit" value="Start" />
+        <input type="button" value="Pause" class="pause-btn" />
+        <input type="button" value="Continue" class="resume-btn" />
+    </form>
+
+    <div id="display">
+        <span id="m">00</span>:<span id="s">00</span>
+    </div>
+
+    <ul id="actions">
+        
+    </ul>
+
+    <audio id="alarm" autobuffer="autobuffer">
+        <source src="timer.mp3" />
+        <source src="timer.ogg" />
+    </audio>
+</div>
+
+</body>
+</html>
